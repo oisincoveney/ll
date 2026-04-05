@@ -10,11 +10,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Copy env file
+        run: cp /home/exedev/ll/.env .env
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm run build
+
+      - name: Copy build to live directory
+        run: |
+          rsync -a --delete build/ /home/exedev/ll/build/
+          cp package.json /home/exedev/ll/package.json
 
       - name: Restart service
         run: sudo systemctl restart ll
