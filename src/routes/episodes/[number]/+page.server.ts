@@ -72,6 +72,13 @@ export async function load({ params }) {
 		}
 	}
 
+	const prevEpisode = num > 1
+		? db.select({ number: episodes.number, title: episodes.title }).from(episodes).where(eq(episodes.number, num - 1)).get()
+		: null;
+	const nextEpisode = num < 90
+		? db.select({ number: episodes.number, title: episodes.title }).from(episodes).where(eq(episodes.number, num + 1)).get()
+		: null;
+
 	return {
 		episode,
 		words: episodeWords,
@@ -79,7 +86,9 @@ export async function load({ params }) {
 		episodeSummary: epSummary?.summary ?? null,
 		vocabulary,
 		savedWords: [...savedWords],
-		transcript
+		transcript,
+		prevEpisode: prevEpisode ?? null,
+		nextEpisode: nextEpisode ?? null
 	};
 }
 

@@ -1,15 +1,7 @@
 [
   {
-    "speaker": null,
+    "speaker": "T",
     "words": [
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
       {
         "display": "English",
         "clean": "english"
@@ -1293,35 +1285,21 @@
       {
         "display": "normal.",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Normal.",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Normal,",
         "clean": "normal"
@@ -1405,19 +1383,12 @@
       {
         "display": "normal?",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Well,",
         "clean": "well"
@@ -1437,19 +1408,12 @@
       {
         "display": "accent.",
         "clean": "accent"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "What",
         "clean": "what"
@@ -1501,19 +1465,12 @@
       {
         "display": "accent?",
         "clean": "accent"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Well",
         "clean": "well"
@@ -1621,19 +1578,12 @@
       {
         "display": "stressed.",
         "clean": "stressed"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Where’s",
         "clean": "where’s"
@@ -1669,19 +1619,12 @@
       {
         "display": "English?",
         "clean": "english"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "On",
         "clean": "on"
@@ -1701,19 +1644,12 @@
       {
         "display": "o.",
         "clean": "o"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Good.",
         "clean": "good"
@@ -1837,35 +1773,21 @@
       {
         "display": "NorMAL.",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "NorMAL.",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "So",
         "clean": "so"
@@ -2013,35 +1935,21 @@
       {
         "display": "Metal:",
         "clean": "metal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Metal.",
         "clean": "metal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Metal.",
         "clean": "metal"
@@ -2901,19 +2809,12 @@
       {
         "display": "accent.",
         "clean": "accent"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "NorMAL,",
         "clean": "normal"
@@ -2925,19 +2826,12 @@
       {
         "display": "MeTAL.",
         "clean": "metal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Perfect.",
         "clean": "perfect"
@@ -3093,35 +2987,21 @@
       {
         "display": "e-s.",
         "clean": "e-s"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Es.",
         "clean": "es"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Es.",
         "clean": "es"
@@ -3357,19 +3237,12 @@
       {
         "display": "normal:",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -3381,19 +3254,12 @@
       {
         "display": "normal.",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Yeah,",
         "clean": "yeah"
@@ -3949,35 +3815,21 @@
       {
         "display": "legal?",
         "clean": "legal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Legal.",
         "clean": "legal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Yeah,",
         "clean": "yeah"
@@ -4053,19 +3905,12 @@
       {
         "display": "legal?",
         "clean": "legal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -4077,19 +3922,12 @@
       {
         "display": "legal.",
         "clean": "legal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -4109,35 +3947,21 @@
       {
         "display": "Illegal?",
         "clean": "illegal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Ilegal.",
         "clean": "ilegal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Ilegal,",
         "clean": "ilegal"
@@ -4677,19 +4501,12 @@
       {
         "display": "illegal:",
         "clean": "illegal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -4701,19 +4518,12 @@
       {
         "display": "ilegal.",
         "clean": "ilegal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Good.",
         "clean": "good"
@@ -4957,19 +4767,12 @@
       {
         "display": "es.",
         "clean": "es"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -4981,19 +4784,12 @@
       {
         "display": "liberal.",
         "clean": "liberal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Yeah,",
         "clean": "yeah"
@@ -5941,35 +5737,21 @@
       {
         "display": "Spanish?",
         "clean": "spanish"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Natural.",
         "clean": "natural"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Natural,",
         "clean": "natural"
@@ -6213,19 +5995,12 @@
       {
         "display": "natural?",
         "clean": "natural"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -6237,19 +6012,12 @@
       {
         "display": "natural.",
         "clean": "natural"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -6725,35 +6493,21 @@
       {
         "display": "Spanish?",
         "clean": "spanish"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "No.",
         "clean": "no"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "No.",
         "clean": "no"
@@ -7021,19 +6775,12 @@
       {
         "display": "not?",
         "clean": "not"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "No",
         "clean": "no"
@@ -7045,19 +6792,12 @@
       {
         "display": "es.",
         "clean": "es"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "No",
         "clean": "no"
@@ -7157,19 +6897,12 @@
       {
         "display": "normal:",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "No",
         "clean": "no"
@@ -7189,19 +6922,12 @@
       {
         "display": "normal.",
         "clean": "normal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "No",
         "clean": "no"
@@ -7477,35 +7203,21 @@
       {
         "display": "apple.",
         "clean": "apple"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Ideal.",
         "clean": "ideal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Good.",
         "clean": "good"
@@ -7565,19 +7277,12 @@
       {
         "display": "ideal?",
         "clean": "ideal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -7589,19 +7294,12 @@
       {
         "display": "ideal.",
         "clean": "ideal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Es",
         "clean": "es"
@@ -7637,19 +7335,12 @@
       {
         "display": "ideal:",
         "clean": "ideal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "No",
         "clean": "no"
@@ -7669,19 +7360,12 @@
       {
         "display": "ideal.",
         "clean": "ideal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Good.",
         "clean": "good"
@@ -7757,35 +7441,21 @@
       {
         "display": "fatal?",
         "clean": "fatal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Fatal.",
         "clean": "fatal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Fatal.",
         "clean": "fatal"
@@ -7805,35 +7475,21 @@
       {
         "display": "Natal:",
         "clean": "natal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Natal.",
         "clean": "natal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Natal,",
         "clean": "natal"
@@ -7853,35 +7509,21 @@
       {
         "display": "Colonial:",
         "clean": "colonial"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Colonial.",
         "clean": "colonial"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Colonial.",
         "clean": "colonial"
@@ -7893,35 +7535,21 @@
       {
         "display": "Cultural:",
         "clean": "cultural"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Culturial?",
         "clean": "culturial"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "So",
         "clean": "so"
@@ -7965,35 +7593,21 @@
       {
         "display": "written.",
         "clean": "written"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Cultural?",
         "clean": "cultural"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Yes",
         "clean": "yes"
@@ -8069,35 +7683,21 @@
       {
         "display": "Annual:",
         "clean": "annual"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Anual.",
         "clean": "anual"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Anual.",
         "clean": "anual"
@@ -8381,35 +7981,21 @@
       {
         "display": "Dental:",
         "clean": "dental"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Dental.",
         "clean": "dental"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Tooth",
         "clean": "tooth"
@@ -8917,67 +8503,39 @@
       {
         "display": "festival:",
         "clean": "festival"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Festival.",
         "clean": "festival"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Personal:",
         "clean": "personal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Personal.",
         "clean": "personal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Personal.",
         "clean": "personal"
@@ -8997,35 +8555,21 @@
       {
         "display": "total:",
         "clean": "total"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Total.",
         "clean": "total"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Total.",
         "clean": "total"
@@ -9045,35 +8589,21 @@
       {
         "display": "verbal:",
         "clean": "verbal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Verbal.",
         "clean": "verbal"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Verbal.",
         "clean": "verbal"
@@ -9773,35 +9303,21 @@
       {
         "display": "Spanish?",
         "clean": "spanish"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Student:",
-        "clean": "student"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "S",
+    "words": [
       {
         "display": "Verbo?",
         "clean": "verbo"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
-      {
-        "display": "Teacher:",
-        "clean": "teacher"
-      },
-      {
-        "display": " ",
-        "clean": ""
-      },
+      }
+    ]
+  },
+  {
+    "speaker": "T",
+    "words": [
       {
         "display": "Yeah,",
         "clean": "yeah"

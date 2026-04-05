@@ -1,7 +1,8 @@
 <script lang="ts">
 	import '../app.css';
-	import { AppBar } from '@skeletonlabs/skeleton-svelte';
+	import { Navigation } from '@skeletonlabs/skeleton-svelte';
 	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
 
 	let { children } = $props();
 </script>
@@ -10,25 +11,63 @@
 	<title>Language Learner</title>
 </svelte:head>
 
-<div class="flex flex-col h-screen">
-	<AppBar>
-		<AppBar.Toolbar>
-			<AppBar.Lead>
-				<a href="/" class="btn preset-filled-primary-500">LL</a>
-			</AppBar.Lead>
-			<AppBar.Headline>
-				<nav class="flex gap-2">
-					<a href="/" class="btn" class:preset-tonal-primary={$page.url.pathname === '/'}>Dashboard</a>
-					<a href="/episodes" class="btn" class:preset-tonal-primary={$page.url.pathname.startsWith('/episodes')}>Episodes</a>
-					<a href="/vocabulary" class="btn" class:preset-tonal-primary={$page.url.pathname === '/vocabulary'}>Vocabulary</a>
-					<a href="/concepts" class="btn" class:preset-tonal-primary={$page.url.pathname === '/concepts'}>Concepts</a>
-				</nav>
-			</AppBar.Headline>
-			<AppBar.Trail />
-		</AppBar.Toolbar>
-	</AppBar>
+<div class="flex h-screen">
+	<!-- Sidebar Navigation -->
+	<Navigation layout="sidebar">
+		<Navigation.Header>
+			<div class="p-4">
+				<a href="/" class="h3 anchor">LL</a>
+				<p class="opacity-50">Language Transfer</p>
+			</div>
+		</Navigation.Header>
 
-	<main class="flex-1 overflow-auto p-4">
-		{@render children()}
+		<Navigation.Menu>
+			<Navigation.Group>
+				<Navigation.Label>Learn</Navigation.Label>
+				<Navigation.TriggerAnchor
+					href="/"
+					class={$page.url.pathname === '/' ? 'preset-tonal-primary' : ''}
+				>
+					<Navigation.TriggerText>Dashboard</Navigation.TriggerText>
+				</Navigation.TriggerAnchor>
+				<Navigation.TriggerAnchor
+					href="/episodes"
+					class={$page.url.pathname.startsWith('/episodes') ? 'preset-tonal-primary' : ''}
+				>
+					<Navigation.TriggerText>Episodes</Navigation.TriggerText>
+				</Navigation.TriggerAnchor>
+			</Navigation.Group>
+
+			<Navigation.Group>
+				<Navigation.Label>Review</Navigation.Label>
+				<Navigation.TriggerAnchor
+					href="/vocabulary"
+					class={$page.url.pathname === '/vocabulary' ? 'preset-tonal-primary' : ''}
+				>
+					<Navigation.TriggerText>Vocabulary</Navigation.TriggerText>
+				</Navigation.TriggerAnchor>
+				<Navigation.TriggerAnchor
+					href="/concepts"
+					class={$page.url.pathname === '/concepts' ? 'preset-tonal-primary' : ''}
+				>
+					<Navigation.TriggerText>Concepts</Navigation.TriggerText>
+				</Navigation.TriggerAnchor>
+			</Navigation.Group>
+		</Navigation.Menu>
+
+		<Navigation.Footer>
+			<div class="p-4">
+				<form method="POST" action="/?/sync" use:enhance>
+					<button type="submit" class="btn preset-tonal w-full">Sync LingQ</button>
+				</form>
+			</div>
+		</Navigation.Footer>
+	</Navigation>
+
+	<!-- Main content -->
+	<main class="flex-1 overflow-auto p-6">
+		<div class="mx-auto max-w-5xl">
+			{@render children()}
+		</div>
 	</main>
 </div>

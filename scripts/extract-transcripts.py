@@ -40,9 +40,9 @@ def format_dialogue(text: str) -> list[dict]:
 
     text = "\n\n".join(joined)
 
-    # Split on speaker markers
-    text = re.sub(r"(?<=[.!?…])\s+(T:|S:)", r"\n\n\1", text)
-    text = re.sub(r"(?<=\S)\s+(T:|S:)\s", r"\n\n\1 ", text)
+    # Split on speaker markers (T:/S:/Teacher:/Student:)
+    text = re.sub(r"(?<=[.!?…])\s+((?:T|Teacher|S|Student):)", r"\n\n\1", text)
+    text = re.sub(r"(?<=\S)\s+((?:T|Teacher|S|Student):)\s", r"\n\n\1 ", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
 
     paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
@@ -51,10 +51,10 @@ def format_dialogue(text: str) -> list[dict]:
     for para in paragraphs:
         speaker = None
         body = para
-        if para.startswith("T:"):
+        if re.match(r"^(?:T|Teacher):", para):
             speaker = "T"
             body = para[para.index(":") + 1 :].strip()
-        elif para.startswith("S:"):
+        elif re.match(r"^(?:S|Student):", para):
             speaker = "S"
             body = para[para.index(":") + 1 :].strip()
 

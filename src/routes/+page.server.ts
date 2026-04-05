@@ -22,10 +22,11 @@ export async function load() {
 		.limit(5)
 		.all();
 
-	const lastSync = db
+	const nextEpisode = db
 		.select()
-		.from(lingqSyncLog)
-		.orderBy(desc(lingqSyncLog.syncedAt))
+		.from(episodes)
+		.where(eq(episodes.listened, false))
+		.orderBy(episodes.number)
 		.limit(1)
 		.all();
 
@@ -35,7 +36,7 @@ export async function load() {
 		wordCount,
 		conceptCount,
 		recentEpisodes,
-		lastSync: lastSync[0] ?? null
+		nextEpisode: nextEpisode[0] ?? null
 	};
 }
 

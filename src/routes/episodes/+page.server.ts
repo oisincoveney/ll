@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { episodes, words, episodeConcepts } from '$lib/server/db/schema';
+import { episodes, words, episodeConcepts, concepts } from '$lib/server/db/schema';
 import { eq, count } from 'drizzle-orm';
 
 export async function load() {
@@ -27,14 +27,34 @@ export async function load() {
 		.groupBy(episodeConcepts.episodeId)
 		.all();
 
+	const conceptNames = db
+		.select({
+			episodeId: episodeConcepts.episodeId,
+			name: concepts.name
+		})
+		.from(episodeConcepts)
+		.innerJoin(concepts, eq(episodeConcepts.conceptId, concepts.id))
+		.all();
+
 	const wordMap = new Map(wordCounts.map((w) => [w.episodeId, w.wordCount]));
 	const conceptMap = new Map(conceptCounts.map((c) => [c.episodeId, c.conceptCount]));
+	const conceptNameMap = new Map<number, string[]>();
+	for (const cn of conceptNames) {
+		const existing = conceptNameMap.get(cn.episodeId) ?? [];
+		existing.push(cn.name);
+		conceptNameMap.set(cn.episodeId, existing);
+	}
+
+	const listenedCount = allEpisodes.filter((ep) => ep.listened).length;
 
 	return {
+		totalEpisodes: allEpisodes.length,
+		listenedCount,
 		episodes: allEpisodes.map((ep) => ({
 			...ep,
 			wordCount: wordMap.get(ep.id) ?? 0,
-			conceptCount: conceptMap.get(ep.id) ?? 0
+			conceptCount: conceptMap.get(ep.id) ?? 0,
+			conceptNames: (conceptNameMap.get(ep.id) ?? []).slice(0, 3)
 		}))
 	};
 }

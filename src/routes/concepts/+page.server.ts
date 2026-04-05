@@ -1,49 +1,46 @@
 import { db } from '$lib/server/db';
-import { concepts, episodeConcepts, episodes } from '$lib/server/db/schema';
-import { eq, asc } from 'drizzle-orm';
+import { concepts, episodeConcepts } from '$lib/server/db/schema';
+import { count, eq } from 'drizzle-orm';
 
 export async function load() {
 	const allConcepts = db.select().from(concepts).orderBy(concepts.category, concepts.name).all();
 
-	const links = db
-		.select({
-			conceptId: episodeConcepts.conceptId,
-			episodeNumber: episodes.number,
-			episodeTitle: episodes.title,
-			role: episodeConcepts.role,
-			summary: episodeConcepts.summary,
-			rule: episodeConcepts.rule,
-			examples: episodeConcepts.examples,
-			notes: episodeConcepts.notes
-		})
+	const categories = new Map<string, { total: number; mastered: number; concepts: number; slug: string }>();
+
+	for (const c of allConcepts) {
+		const cat = c.category || 'Uncategorized';
+		const existing = categories.get(cat) ?? { total: 0, mastered: 0, concepts: 0, slug: cat.toLowerCase().replace(/\s+/g, '-') };
+		existing.total++;
+		existing.concepts++;
+		if (c.mastery >= 3) existing.mastered++;
+		categories.set(cat, existing);
+	}
+
+	// Count episode links per category
+	const episodeLinks = db
+		.select({ conceptId: episodeConcepts.conceptId, linkCount: count() })
 		.from(episodeConcepts)
-		.innerJoin(episodes, eq(episodeConcepts.episodeId, episodes.id))
-		.orderBy(asc(episodes.number))
+		.groupBy(episodeConcepts.conceptId)
 		.all();
 
-	const linkMap = new Map<number, typeof links>();
-	for (const link of links) {
-		const existing = linkMap.get(link.conceptId) ?? [];
-		existing.push(link);
-		linkMap.set(link.conceptId, existing);
+	const linkMap = new Map(episodeLinks.map((l) => [l.conceptId, l.linkCount]));
+
+	const categoryEpisodeCounts = new Map<string, number>();
+	for (const c of allConcepts) {
+		const cat = c.category || 'Uncategorized';
+		const current = categoryEpisodeCounts.get(cat) ?? 0;
+		categoryEpisodeCounts.set(cat, current + (linkMap.get(c.id) ?? 0));
 	}
 
 	return {
-		concepts: allConcepts.map((c) => ({
-			...c,
-			episodes: (linkMap.get(c.id) ?? []).map((ep) => ({
-				...ep,
-				examples: ep.examples ? JSON.parse(ep.examples) as Array<{ spanish: string; english: string }> : []
-			}))
-		}))
+		categories: [...categories.entries()].map(([name, data]) => ({
+			name,
+			slug: data.slug,
+			conceptCount: data.concepts,
+			masteredCount: data.mastered,
+			episodeLinkCount: categoryEpisodeCounts.get(name) ?? 0
+		})),
+		totalConcepts: allConcepts.length,
+		totalMastered: allConcepts.filter((c) => c.mastery >= 3).length
 	};
 }
-
-export const actions = {
-	updateMastery: async ({ request }) => {
-		const formData = await request.formData();
-		const id = Number(formData.get('id'));
-		const mastery = Number(formData.get('mastery'));
-		db.update(concepts).set({ mastery }).where(eq(concepts.id, id)).run();
-	}
-};

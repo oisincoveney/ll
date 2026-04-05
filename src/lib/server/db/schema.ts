@@ -7,7 +7,8 @@ export const episodes = sqliteTable('episodes', {
 	title: text('title').notNull(),
 	listened: integer('listened', { mode: 'boolean' }).notNull().default(false),
 	listenedAt: text('listened_at'),
-	transcriptPath: text('transcript_path')
+	transcriptPath: text('transcript_path'),
+	playbackPosition: integer('playback_position').notNull().default(0)
 });
 
 export const words = sqliteTable('words', {
