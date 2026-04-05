@@ -5,7 +5,9 @@
 
 	let { data, form } = $props();
 	let activeTab = $state('transcript');
-	let listened = $derived(data.episode.listened);
+	let listened = $state(data.episode.listened);
+	$effect(() => { listened = data.episode.listened; });
+	let formEl: HTMLFormElement;
 
 	let pendingWord = $state('');
 	let popoverOpen = $state(false);
@@ -40,10 +42,10 @@
 			<h1 class="h2">{data.episode.title}</h1>
 		</div>
 
-		<form method="POST" action="?/toggleListened" use:enhance>
+		<form bind:this={formEl} method="POST" action="?/toggleListened" use:enhance>
 			<input type="hidden" name="number" value={data.episode.number} />
 			<input type="hidden" name="listened" value={String(!listened)} />
-			<Switch checked={listened} onCheckedChange={() => {}}>
+			<Switch checked={listened} onCheckedChange={() => { formEl.requestSubmit(); listened = !listened; }}>
 				<Switch.Control>
 					<Switch.Thumb />
 				</Switch.Control>
