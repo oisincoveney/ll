@@ -22,5 +22,8 @@ jobs:
       - name: Deploy build artifacts
         run: rsync -a --delete build/ /home/exedev/ll/build/
 
+      - name: Deploy dependencies
+        run: rsync -a --delete node_modules/ /home/exedev/ll/node_modules/
+
       - name: Restart service
         run: sudo systemctl restart ll
