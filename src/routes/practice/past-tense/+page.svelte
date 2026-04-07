@@ -62,12 +62,9 @@
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
-		if (e.key === 'Enter') {
-			if (!submitted) {
-				submitAnswer();
-			} else {
-				advance();
-			}
+		if (phase !== 'active' || e.key !== 'Enter') return;
+		if (submitted) {
+			advance();
 		}
 	}
 
@@ -79,6 +76,8 @@
 		start(missed, missed.length);
 	}
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <div class="flex flex-col gap-4 max-w-2xl mx-auto">
 	<div>
@@ -179,19 +178,20 @@
 
 			{#if !submitted}
 				<!-- svelte-ignore a11y_autofocus -->
-				<input
-					type="text"
-					bind:value={userInput}
-					class="input"
-					placeholder="Type your Spanish translation..."
-					autofocus
-					onkeydown={handleKeydown}
-				/>
-				<button
-					class="btn preset-filled-primary"
-					onclick={submitAnswer}
-					disabled={!userInput.trim()}
-				>Check</button>
+				<form onsubmit={(e) => { e.preventDefault(); submitAnswer(); }}>
+					<input
+						type="text"
+						bind:value={userInput}
+						class="input"
+						placeholder="Type your Spanish translation..."
+						autofocus
+					/>
+					<button
+						type="submit"
+						class="btn preset-filled-primary mt-2 w-full"
+						disabled={!userInput.trim()}
+					>Check</button>
+				</form>
 			{:else if lastResult}
 				{#if lastResult.correct}
 					<div class="card preset-tonal-primary p-4">
@@ -212,7 +212,7 @@
 					</div>
 				{/if}
 
-				<button class="btn preset-filled-primary" onclick={advance} autofocus>Next</button>
+				<button class="btn preset-filled-primary" onclick={advance}>Next</button>
 			{/if}
 		</div>
 
