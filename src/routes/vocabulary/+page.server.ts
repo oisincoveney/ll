@@ -1,8 +1,11 @@
 import { db } from '$lib/server/db';
 import { words, episodes } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
+import type { PageServerLoad } from './$types';
 
-export async function load() {
+export const load: PageServerLoad = async ({ locals }) => {
+	const userId = locals.user!.id;
+
 	const allWords = db
 		.select({
 			id: words.id,
@@ -15,8 +18,9 @@ export async function load() {
 		})
 		.from(words)
 		.innerJoin(episodes, eq(words.episodeId, episodes.id))
+		.where(eq(words.userId, userId))
 		.orderBy(episodes.number)
 		.all();
 
 	return { words: allWords };
-}
+};

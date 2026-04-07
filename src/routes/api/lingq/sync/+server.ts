@@ -1,13 +1,17 @@
 import { db } from '$lib/server/db';
 import { words, lingqSyncLog } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { fetchAllCards } from '$lib/server/lingq';
-import { json } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
-export async function POST() {
+export const POST: RequestHandler = async ({ locals }) => {
+	const userId = locals.user?.id;
+	if (!userId) throw error(401, 'Unauthorized');
+
 	try {
 		const cards = await fetchAllCards();
-		const localWords = db.select().from(words).all();
+		const localWords = db.select().from(words).where(eq(words.userId, userId)).all();
 
 		let matched = 0;
 		for (const word of localWords) {
@@ -25,6 +29,7 @@ export async function POST() {
 
 		db.insert(lingqSyncLog)
 			.values({
+				userId,
 				syncedAt: new Date().toISOString(),
 				cardsProcessed: cards.length,
 				cardsMatched: matched,
@@ -38,6 +43,7 @@ export async function POST() {
 		const errorMsg = e instanceof Error ? `${e.message} (${e.cause ?? 'no cause'})` : 'Unknown error';
 		db.insert(lingqSyncLog)
 			.values({
+				userId,
 				syncedAt: new Date().toISOString(),
 				cardsProcessed: 0,
 				cardsMatched: 0,
@@ -48,4 +54,4 @@ export async function POST() {
 
 		return json({ ok: false, error: errorMsg }, { status: 500 });
 	}
-}
+};

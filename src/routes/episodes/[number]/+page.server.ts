@@ -1,10 +1,11 @@
 import { db } from '$lib/server/db';
-import { episodes, words, concepts, episodeConcepts, episodeSummaries } from '$lib/server/db/schema';
-import { eq, asc } from 'drizzle-orm';
+import { episodes, words, concepts, episodeConcepts, episodeSummaries, userEpisodes } from '$lib/server/db/schema';
+import { eq, asc, and } from 'drizzle-orm';
 import { error, fail } from '@sveltejs/kit';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { lookupCard, createCard } from '$lib/server/lingq';
+import type { PageServerLoad, Actions } from './$types';
 
 interface TranscriptWord {
 	display: string;
@@ -16,17 +17,24 @@ interface TranscriptTurn {
 	words: TranscriptWord[];
 }
 
-export async function load({ params }) {
+export const load: PageServerLoad = async ({ params, locals }) => {
+	const userId = locals.user!.id;
 	const num = parseInt(params.number);
 	if (isNaN(num) || num < 1 || num > 90) throw error(404, 'Episode not found');
 
 	const episode = db.select().from(episodes).where(eq(episodes.number, num)).get();
 	if (!episode) throw error(404, 'Episode not found');
 
+	const userEpisode = db
+		.select()
+		.from(userEpisodes)
+		.where(and(eq(userEpisodes.userId, userId), eq(userEpisodes.episodeId, episode.id)))
+		.get();
+
 	const episodeWords = db
 		.select()
 		.from(words)
-		.where(eq(words.episodeId, episode.id))
+		.where(and(eq(words.userId, userId), eq(words.episodeId, episode.id)))
 		.all();
 
 	const linkedConcepts = db
@@ -80,7 +88,12 @@ export async function load({ params }) {
 		: null;
 
 	return {
-		episode,
+		episode: {
+			...episode,
+			listened: userEpisode?.listened ?? false,
+			listenedAt: userEpisode?.listenedAt ?? null,
+			playbackPosition: userEpisode?.playbackPosition ?? 0
+		},
 		words: episodeWords,
 		concepts: linkedConcepts,
 		episodeSummary: epSummary?.summary ?? null,
@@ -90,21 +103,44 @@ export async function load({ params }) {
 		prevEpisode: prevEpisode ?? null,
 		nextEpisode: nextEpisode ?? null
 	};
-}
+};
 
-export const actions = {
-	toggleListened: async ({ request }) => {
+export const actions: Actions = {
+	toggleListened: async ({ request, locals }) => {
+		const userId = locals.user!.id;
 		const formData = await request.formData();
 		const num = Number(formData.get('number'));
 		const listened = formData.get('listened') === 'true';
 
-		db.update(episodes)
-			.set({ listened, listenedAt: listened ? new Date().toISOString() : null })
-			.where(eq(episodes.number, num))
-			.run();
+		const episode = db.select().from(episodes).where(eq(episodes.number, num)).get();
+		if (!episode) return;
+
+		const existing = db
+			.select()
+			.from(userEpisodes)
+			.where(and(eq(userEpisodes.userId, userId), eq(userEpisodes.episodeId, episode.id)))
+			.get();
+
+		if (existing) {
+			db.update(userEpisodes)
+				.set({ listened, listenedAt: listened ? new Date().toISOString() : null })
+				.where(eq(userEpisodes.id, existing.id))
+				.run();
+		} else {
+			db.insert(userEpisodes)
+				.values({
+					userId,
+					episodeId: episode.id,
+					listened,
+					listenedAt: listened ? new Date().toISOString() : null,
+					playbackPosition: 0
+				})
+				.run();
+		}
 	},
 
-	addWord: async ({ request }) => {
+	addWord: async ({ request, locals }) => {
+		const userId = locals.user!.id;
 		const formData = await request.formData();
 		const term = String(formData.get('term') ?? '').trim();
 		const episodeNumber = Number(formData.get('episodeNumber'));
@@ -117,7 +153,7 @@ export const actions = {
 		const existing = db
 			.select()
 			.from(words)
-			.where(eq(words.episodeId, episode.id))
+			.where(and(eq(words.userId, userId), eq(words.episodeId, episode.id)))
 			.all()
 			.find((w) => w.spanish.toLowerCase() === term.toLowerCase());
 
@@ -140,6 +176,7 @@ export const actions = {
 		const result = db
 			.insert(words)
 			.values({
+				userId,
 				spanish: card.term,
 				english,
 				example: null,
@@ -154,9 +191,13 @@ export const actions = {
 		return { added: true, word: result };
 	},
 
-	deleteWord: async ({ request }) => {
+	deleteWord: async ({ request, locals }) => {
+		const userId = locals.user!.id;
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));
-		db.delete(words).where(eq(words.id, id)).run();
+		// Ensure ownership
+		db.delete(words)
+			.where(and(eq(words.id, id), eq(words.userId, userId)))
+			.run();
 	}
 };

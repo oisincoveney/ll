@@ -1,9 +1,13 @@
 import { db } from '$lib/server/db';
 import { words } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { json, error } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
-export async function PUT({ params, request }) {
+export const PUT: RequestHandler = async ({ params, request, locals }) => {
+	const userId = locals.user?.id;
+	if (!userId) throw error(401, 'Unauthorized');
+
 	const id = parseInt(params.id);
 	if (isNaN(id)) throw error(400, 'Invalid word ID');
 
@@ -14,16 +18,19 @@ export async function PUT({ params, request }) {
 			english: body.english?.trim(),
 			example: body.example?.trim() || null
 		})
-		.where(eq(words.id, id))
+		.where(and(eq(words.id, id), eq(words.userId, userId)))
 		.run();
 
 	return json({ ok: true });
-}
+};
 
-export async function DELETE({ params }) {
+export const DELETE: RequestHandler = async ({ params, locals }) => {
+	const userId = locals.user?.id;
+	if (!userId) throw error(401, 'Unauthorized');
+
 	const id = parseInt(params.id);
 	if (isNaN(id)) throw error(400, 'Invalid word ID');
 
-	db.delete(words).where(eq(words.id, id)).run();
+	db.delete(words).where(and(eq(words.id, id), eq(words.userId, userId))).run();
 	return json({ ok: true });
-}
+};

@@ -2,8 +2,9 @@ import { db } from '$lib/server/db';
 import { concepts, episodeConcepts } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { json, error } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
-export async function PUT({ params, request }) {
+export const PUT: RequestHandler = async ({ params, request }) => {
 	const id = parseInt(params.id);
 	if (isNaN(id)) throw error(400, 'Invalid concept ID');
 
@@ -12,17 +13,15 @@ export async function PUT({ params, request }) {
 		.set({
 			name: body.name?.trim(),
 			description: body.description?.trim() || null,
-			category: body.category?.trim() || null,
-			mastery: body.mastery
+			category: body.category?.trim() || null
 		})
 		.where(eq(concepts.id, id))
 		.run();
 
 	return json({ ok: true });
-}
+};
 
-export async function POST({ params, request }) {
-	// Link concept to episode
+export const POST: RequestHandler = async ({ params, request }) => {
 	const id = parseInt(params.id);
 	if (isNaN(id)) throw error(400, 'Invalid concept ID');
 
@@ -43,4 +42,4 @@ export async function POST({ params, request }) {
 		.run();
 
 	return json({ ok: true }, { status: 201 });
-}
+};

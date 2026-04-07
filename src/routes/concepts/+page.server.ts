@@ -1,9 +1,20 @@
 import { db } from '$lib/server/db';
-import { concepts, episodeConcepts } from '$lib/server/db/schema';
+import { concepts, episodeConcepts, userConcepts } from '$lib/server/db/schema';
 import { count, eq } from 'drizzle-orm';
+import type { PageServerLoad } from './$types';
 
-export async function load() {
+export const load: PageServerLoad = async ({ locals }) => {
+	const userId = locals.user!.id;
+
 	const allConcepts = db.select().from(concepts).orderBy(concepts.category, concepts.name).all();
+
+	const userConceptRows = db
+		.select()
+		.from(userConcepts)
+		.where(eq(userConcepts.userId, userId))
+		.all();
+
+	const masteryMap = new Map(userConceptRows.map((uc) => [uc.conceptId, uc.mastery]));
 
 	const categories = new Map<string, { total: number; mastered: number; concepts: number; slug: string }>();
 
@@ -12,11 +23,10 @@ export async function load() {
 		const existing = categories.get(cat) ?? { total: 0, mastered: 0, concepts: 0, slug: cat.toLowerCase().replace(/\s+/g, '-') };
 		existing.total++;
 		existing.concepts++;
-		if (c.mastery >= 3) existing.mastered++;
+		if ((masteryMap.get(c.id) ?? 0) >= 3) existing.mastered++;
 		categories.set(cat, existing);
 	}
 
-	// Count episode links per category
 	const episodeLinks = db
 		.select({ conceptId: episodeConcepts.conceptId, linkCount: count() })
 		.from(episodeConcepts)
@@ -41,6 +51,6 @@ export async function load() {
 			episodeLinkCount: categoryEpisodeCounts.get(name) ?? 0
 		})),
 		totalConcepts: allConcepts.length,
-		totalMastered: allConcepts.filter((c) => c.mastery >= 3).length
+		totalMastered: allConcepts.filter((c) => (masteryMap.get(c.id) ?? 0) >= 3).length
 	};
-}
+};

@@ -208,8 +208,8 @@
 					{/if}
 
 					{#if data.concepts.length > 0}
-						{#each data.concepts as concept}
-							<Collapsible open={concept === data.concepts[0]}>
+						{#each data.concepts as concept, i}
+							<Collapsible defaultOpen={i === 0}>
 								<Collapsible.Trigger>
 									<div class="flex items-center gap-2">
 										<span class="font-bold">{concept.name}</span>

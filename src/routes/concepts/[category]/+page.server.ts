@@ -1,12 +1,13 @@
 import { db } from '$lib/server/db';
-import { concepts, episodeConcepts, episodes } from '$lib/server/db/schema';
-import { eq, asc } from 'drizzle-orm';
+import { concepts, episodeConcepts, episodes, userConcepts } from '$lib/server/db/schema';
+import { eq, asc, and } from 'drizzle-orm';
 import { error } from '@sveltejs/kit';
+import type { PageServerLoad, Actions } from './$types';
 
-export async function load({ params }) {
+export const load: PageServerLoad = async ({ params, locals }) => {
+	const userId = locals.user!.id;
 	const categorySlug = params.category;
 
-	// Find all concepts, then filter by slug match on category
 	const allConcepts = db.select().from(concepts).orderBy(concepts.name).all();
 	const categoryConcepts = allConcepts.filter(
 		(c) => (c.category || 'Uncategorized').toLowerCase().replace(/\s+/g, '-') === categorySlug
@@ -16,8 +17,16 @@ export async function load({ params }) {
 
 	const categoryName = categoryConcepts[0].category || 'Uncategorized';
 
-	// Load episode links for these concepts
+	// Load user mastery for these concepts
 	const conceptIds = categoryConcepts.map((c) => c.id);
+	const userConceptRows = db
+		.select()
+		.from(userConcepts)
+		.where(eq(userConcepts.userId, userId))
+		.all()
+		.filter((uc) => conceptIds.includes(uc.conceptId));
+	const masteryMap = new Map(userConceptRows.map((uc) => [uc.conceptId, uc.mastery]));
+
 	const links = db
 		.select({
 			conceptId: episodeConcepts.conceptId,
@@ -42,7 +51,6 @@ export async function load({ params }) {
 		linkMap.set(link.conceptId, existing);
 	}
 
-	// Find adjacent categories for navigation
 	const allCategories = [...new Set(allConcepts.map((c) => c.category || 'Uncategorized'))].sort();
 	const currentIndex = allCategories.indexOf(categoryName);
 	const prevCategory = currentIndex > 0 ? allCategories[currentIndex - 1] : null;
@@ -57,6 +65,7 @@ export async function load({ params }) {
 		categorySlug,
 		concepts: categoryConcepts.map((c) => ({
 			...c,
+			mastery: masteryMap.get(c.id) ?? 0,
 			episodes: (linkMap.get(c.id) ?? []).map((ep) => ({
 				...ep,
 				examples: ep.examples ? JSON.parse(ep.examples) as Array<{ spanish: string; english: string }> : []
@@ -65,13 +74,25 @@ export async function load({ params }) {
 		prevCategory: prevCategory ? { name: prevCategory, slug: toSlug(prevCategory) } : null,
 		nextCategory: nextCategory ? { name: nextCategory, slug: toSlug(nextCategory) } : null
 	};
-}
+};
 
-export const actions = {
-	updateMastery: async ({ request }) => {
+export const actions: Actions = {
+	updateMastery: async ({ request, locals }) => {
+		const userId = locals.user!.id;
 		const formData = await request.formData();
-		const id = Number(formData.get('id'));
+		const conceptId = Number(formData.get('id'));
 		const mastery = Number(formData.get('mastery'));
-		db.update(concepts).set({ mastery }).where(eq(concepts.id, id)).run();
+
+		const existing = db
+			.select()
+			.from(userConcepts)
+			.where(and(eq(userConcepts.userId, userId), eq(userConcepts.conceptId, conceptId)))
+			.get();
+
+		if (existing) {
+			db.update(userConcepts).set({ mastery }).where(eq(userConcepts.id, existing.id)).run();
+		} else {
+			db.insert(userConcepts).values({ userId, conceptId, mastery }).run();
+		}
 	}
 };
