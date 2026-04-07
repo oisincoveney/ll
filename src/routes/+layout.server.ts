@@ -1,4 +1,5 @@
 import { redirect } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals, url }) => {
@@ -7,7 +8,7 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
 		return { user: locals.user };
 	}
 
-	if (!locals.user) {
+	if (!locals.user && env.BYPASS_AUTH !== 'true') {
 		redirect(302, '/auth/signin');
 	}
 
