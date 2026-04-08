@@ -53,7 +53,7 @@
 		<SegmentedControl
 			name="status"
 			value={statusFilter}
-			onValueChange={(details) => { statusFilter = details.value; }}
+			onValueChange={(details) => { statusFilter = details.value ?? 'all'; }}
 		>
 			<SegmentedControl.Control>
 				<SegmentedControl.Indicator />

@@ -18,8 +18,7 @@
 	const filteredConcepts = $derived(
 		data.concepts.filter((c) => {
 			const matchesSearch = !search ||
-				c.name.toLowerCase().includes(search.toLowerCase()) ||
-				(c.description?.toLowerCase().includes(search.toLowerCase()) ?? false);
+				c.name.toLowerCase().includes(search.toLowerCase());
 			const matchesMastery = masteryFilter === 'all' || String(c.mastery) === masteryFilter;
 			return matchesSearch && matchesMastery;
 		})
@@ -60,7 +59,7 @@
 		<div class="overflow-x-auto"><SegmentedControl
 			name="mastery-filter"
 			value={masteryFilter}
-			onValueChange={(details) => { masteryFilter = details.value; }}
+			onValueChange={(details) => { masteryFilter = details.value ?? 'all'; }}
 		>
 			<SegmentedControl.Control>
 				<SegmentedControl.Indicator />
@@ -107,10 +106,6 @@
 						{/each}
 					</form>
 				</div>
-
-				{#if concept.description}
-					<p class="opacity-75 mt-1">{concept.description}</p>
-				{/if}
 
 				<!-- Episode links as compact chips -->
 				{#if concept.episodes.length > 0}

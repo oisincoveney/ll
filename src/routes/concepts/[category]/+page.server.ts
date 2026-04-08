@@ -42,7 +42,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			id: allConcepts.indexOf(c) + 1,
 			slug: c.slug,
 			name: c.name,
-			description: null,
 			category: c.category,
 			mastery: masteryMap.get(allConcepts.indexOf(c) + 1) ?? 0,
 			episodes: c.episodes.map((ep) => ({

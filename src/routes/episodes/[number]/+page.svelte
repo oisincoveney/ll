@@ -174,11 +174,7 @@
 								<form method="POST" action="?/deleteWord" use:enhance>
 									<input type="hidden" name="id" value={word.id} />
 									<Tooltip>
-										<Tooltip.Trigger>
-											{#snippet child({ props })}
-												<button {...props} type="submit" class="btn btn-sm preset-tonal-error">&times;</button>
-											{/snippet}
-										</Tooltip.Trigger>
+										<Tooltip.Trigger type="submit" class="btn btn-sm preset-tonal-error">&times;</Tooltip.Trigger>
 										<Tooltip.Content>Remove word</Tooltip.Content>
 									</Tooltip>
 								</form>
