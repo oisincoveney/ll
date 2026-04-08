@@ -1,18 +1,16 @@
 <script lang="ts">
-	import { goto, beforeNavigate } from '$app/navigation';
+	import { goto, beforeNavigate, invalidateAll } from '$app/navigation';
 	import { onDestroy } from 'svelte';
 	import { PlayIcon, PauseIcon } from '@lucide/svelte';
 
 	let {
 		episodeNumber,
 		playbackPosition = 0,
-		nextEpisodeNumber = null,
-		onListenedChange
+		nextEpisodeNumber = null
 	}: {
 		episodeNumber: number;
 		playbackPosition: number;
 		nextEpisodeNumber: number | null;
-		onListenedChange?: () => void;
 	} = $props();
 
 	let audioEl: HTMLAudioElement | undefined = $state();
@@ -39,15 +37,15 @@
 		});
 	}
 
-	function markListened() {
+	async function markListened() {
 		if (markedListened) return;
 		markedListened = true;
-		fetch(`/api/episodes/${episodeNumber}`, {
+		await fetch(`/api/episodes/${episodeNumber}`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ listened: true })
 		});
-		onListenedChange?.();
+		invalidateAll();
 	}
 
 	function startSaveTimer() {
@@ -78,16 +76,17 @@
 		}
 	}
 
-	function handleEnded() {
+	async function handleEnded() {
 		stopSaveTimer();
-		fetch(`/api/episodes/${episodeNumber}`, {
+		await fetch(`/api/episodes/${episodeNumber}`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ playbackPosition: 0, listened: true })
 		});
-		if (!markedListened) onListenedChange?.();
 		if (nextEpisodeNumber && !userSeeked) {
 			goto(`/episodes/${nextEpisodeNumber}`);
+		} else {
+			invalidateAll();
 		}
 	}
 

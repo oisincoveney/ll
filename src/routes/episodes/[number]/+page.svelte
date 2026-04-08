@@ -5,8 +5,6 @@
 
 	let { data, form } = $props();
 	let activeTab = $state('transcript');
-	let listened = $state(data.episode.listened);
-	$effect(() => { listened = data.episode.listened; });
 	let formEl: HTMLFormElement;
 
 	let pendingWord = $state('');
@@ -44,12 +42,12 @@
 
 		<form bind:this={formEl} method="POST" action="?/toggleListened" use:enhance>
 			<input type="hidden" name="number" value={data.episode.number} />
-			<input type="hidden" name="listened" value={String(!listened)} />
-			<Switch checked={listened} onCheckedChange={() => { formEl.requestSubmit(); listened = !listened; }}>
-				<Switch.Control>
+			<input type="hidden" name="listened" value={String(!data.episode.listened)} />
+			<Switch checked={data.episode.listened}>
+				<Switch.Control onclick={() => formEl.requestSubmit()}>
 					<Switch.Thumb />
 				</Switch.Control>
-				<Switch.Label><span class="hidden sm:inline">{listened ? 'Listened' : 'Not listened'}</span></Switch.Label>
+				<Switch.Label><span class="hidden sm:inline">{data.episode.listened ? 'Listened' : 'Not listened'}</span></Switch.Label>
 				<Switch.HiddenInput name="_switch" />
 			</Switch>
 			<noscript><button type="submit" class="btn btn-sm">Toggle</button></noscript>
@@ -68,7 +66,6 @@
 			episodeNumber={data.episode.number}
 			playbackPosition={data.episode.playbackPosition}
 			nextEpisodeNumber={data.nextEpisode?.number ?? null}
-			onListenedChange={() => { listened = true; }}
 		/>
 	</div>
 
