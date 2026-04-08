@@ -6,24 +6,15 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Copy env file
-        run: cp /home/exedev/ll/.env .env
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Deploy build artifacts
-        run: rsync -a --delete build/ /home/exedev/ll/build/
-
-      - name: Deploy dependencies
-        run: rsync -a --delete node_modules/ /home/exedev/ll/node_modules/
-
-      - name: Restart service
-        run: sudo systemctl restart ll
+      - name: Deploy
+        run: |
+          ssh exedev@${{ secrets.DEPLOY_HOST }} 'cd /home/exedev/ll && git pull --ff-only && pnpm install --frozen-lockfile && pnpm run build && sudo systemctl restart ll'
