@@ -27,8 +27,13 @@ jobs:
       - name: Deploy dependencies
         run: rsync -a --delete node_modules/ /home/exedev/ll/node_modules/
 
+      - name: Deploy migrations
+        run: |
+          rsync -a drizzle.config.ts /home/exedev/ll/
+          rsync -a --delete drizzle/ /home/exedev/ll/drizzle/
+
       - name: Apply schema changes
-        run: pnpm drizzle-kit push --dialect sqlite --schema ./src/lib/server/db/schema.ts --url /home/exedev/ll/data/ll.db --force
+        run: cd /home/exedev/ll && pnpm drizzle-kit migrate
 
       - name: Restart service
         run: sudo systemctl restart ll
