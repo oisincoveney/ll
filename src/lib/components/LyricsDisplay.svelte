@@ -1,11 +1,15 @@
 <script lang="ts">
-	import type { LrcLine } from '$lib/lrc';
+	interface DisplayLine {
+		startMs: number;
+		spanish: string;
+		english: string | null;
+	}
 
 	interface Props {
-		lines: LrcLine[];
+		lines: DisplayLine[];
 		currentMs: number;
 		trackedWords: string[];
-		onWordClick: (word: string) => void;
+		onWordClick: (word: string, event: MouseEvent) => void;
 	}
 
 	let { lines, currentMs, trackedWords, onWordClick }: Props = $props();
@@ -48,9 +52,9 @@
 		return trackedWords.includes(cleanWord(token));
 	}
 
-	function handleWordClick(token: string) {
+	function handleWordClick(e: MouseEvent, token: string) {
 		const clean = cleanWord(token);
-		if (clean) onWordClick(clean);
+		if (clean) onWordClick(clean, e);
 	}
 </script>
 
@@ -62,21 +66,26 @@
 				? 'preset-tonal-primary'
 				: 'opacity-60'}"
 		>
-			{#each tokenize(line.text) as token}
-				{#if token.trim()}
-					<button
-						type="button"
-						class="inline rounded px-0.5 {isTracked(token)
-							? 'chip preset-tonal-primary'
-							: 'hover:preset-tonal'}"
-						onclick={() => handleWordClick(token)}
-					>
-						{token}
-					</button>
-				{:else}
-					<span>{token}</span>
-				{/if}
-			{/each}
+			<div>
+				{#each tokenize(line.spanish) as token}
+					{#if token.trim()}
+						<button
+							type="button"
+							class="inline rounded px-0.5 {isTracked(token)
+								? 'chip preset-tonal-primary'
+								: 'hover:preset-tonal'}"
+							onclick={(e) => handleWordClick(e, token)}
+						>
+							{token}
+						</button>
+					{:else}
+						<span>{token}</span>
+					{/if}
+				{/each}
+			</div>
+			{#if line.english}
+				<p class="text-sm opacity-50 mt-0.5 pl-0.5">{line.english}</p>
+			{/if}
 		</li>
 	{/each}
 </ol>

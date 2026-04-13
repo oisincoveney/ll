@@ -10,10 +10,10 @@
 	let pendingWord = $state('');
 	let popoverOpen = $state(false);
 	let anchorEl: HTMLElement | null = $state(null);
-	let addWordFormEl: HTMLFormElement | null = $state(null);
+	let reloadingLyrics = $state(false);
 
-	function handleWordClick(e: MouseEvent, word: string) {
-		anchorEl = e.currentTarget as HTMLElement;
+	function handleWordClick(word: string, event: MouseEvent) {
+		anchorEl = event.target as HTMLElement; // target is always an element in onclick
 		pendingWord = word;
 		popoverOpen = true;
 	}
@@ -32,7 +32,7 @@
 	<title>{data.song.title} — Language Learner</title>
 </svelte:head>
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4 h-full overflow-hidden">
 	<div class="flex items-center gap-3">
 		<a href="/music" class="btn btn-sm preset-tonal">&larr;</a>
 		<div class="flex-1">
@@ -56,8 +56,8 @@
 		<aside class="card preset-tonal-error p-3">{form.addError}</aside>
 	{/if}
 
-	<div class="grid md:grid-cols-2 gap-4 items-start">
-		<div class="flex flex-col gap-4">
+	<div class="flex-1 min-h-0 grid md:grid-cols-2 gap-4">
+		<div class="flex flex-col gap-4 overflow-y-auto min-h-0">
 			<SongPlayer youtubeId={data.song.youtubeId} onTimeUpdate={handleTimeUpdate} />
 
 			{#if data.songWords.length > 0}
@@ -84,31 +84,55 @@
 		</div>
 
 		{#if data.lines.length > 0}
-			<section class="card preset-tonal p-4 max-h-screen overflow-y-auto">
-				<div class="flex items-center justify-between mb-3">
+			<section class="card preset-tonal flex flex-col overflow-hidden">
+				<div class="flex items-center justify-between p-4 pb-2">
 					<h2 class="h4">Lyrics</h2>
-					<form method="POST" action="?/reloadLyrics" use:enhance>
-						<button type="submit" class="btn btn-sm preset-tonal">Reload lyrics</button>
+					<form
+						method="POST"
+						action="?/reloadLyrics"
+						use:enhance={() => {
+							reloadingLyrics = true;
+							return ({ update }) => {
+								reloadingLyrics = false;
+								update();
+							};
+						}}
+					>
+						<button type="submit" disabled={reloadingLyrics} class="btn btn-sm preset-tonal">
+							{reloadingLyrics ? 'Reloading…' : 'Reload lyrics'}
+						</button>
 					</form>
 				</div>
 				{#if form?.reloadError}
-					<p class="text-sm opacity-75 mb-2">{form.reloadError}</p>
+					<p class="text-sm opacity-75 px-4">{form.reloadError}</p>
 				{/if}
-				<LyricsDisplay
-					lines={data.lines.map((l) => ({ startMs: l.startMs, text: l.spanish }))}
-					{currentMs}
-					trackedWords={data.trackedWords}
-					onWordClick={(word) => {
-						pendingWord = word;
-						popoverOpen = true;
-					}}
-				/>
+				<div class="flex-1 overflow-y-auto">
+					<LyricsDisplay
+						lines={data.lines.map((l) => ({ startMs: l.startMs, spanish: l.spanish, english: l.english ?? null }))}
+						{currentMs}
+						trackedWords={data.trackedWords}
+						onWordClick={handleWordClick}
+					/>
+				</div>
 			</section>
 		{:else}
 			<section class="card preset-tonal p-4 text-center opacity-60">
 				<p>No lyrics added yet.</p>
-				<form method="POST" action="?/reloadLyrics" use:enhance class="mt-2">
-					<button type="submit" class="btn btn-sm preset-tonal">Reload lyrics</button>
+				<form
+					method="POST"
+					action="?/reloadLyrics"
+					use:enhance={() => {
+						reloadingLyrics = true;
+						return ({ update }) => {
+							reloadingLyrics = false;
+							update();
+						};
+					}}
+					class="mt-2"
+				>
+					<button type="submit" disabled={reloadingLyrics} class="btn btn-sm preset-tonal">
+						{reloadingLyrics ? 'Reloading…' : 'Reload lyrics'}
+					</button>
 				</form>
 				{#if form?.reloadError}
 					<p class="text-sm opacity-75 mt-1">{form.reloadError}</p>
@@ -120,25 +144,28 @@
 
 <Popover
 	open={popoverOpen}
-	onOpenChange={(o) => { if (!o) hidePopover(); }}
-	positioning={{ placement: 'top' }}
+	onOpenChange={(details: { open: boolean }) => { if (!details.open) hidePopover(); }}
+	positioning={{ placement: 'top', flip: true, getAnchorElement: () => anchorEl }}
+	closeOnInteractOutside={true}
 >
-	<Popover.Content>
-		<p class="mb-2 font-medium">{pendingWord}</p>
-		<form
-			bind:this={addWordFormEl}
-			method="POST"
-			action="?/addWord"
-			use:enhance={() => {
-				return ({ result }) => {
-					if (result.type === 'success' || result.type === 'redirect') hidePopover();
-				};
-			}}
-			class="flex gap-2"
-		>
-			<input type="hidden" name="term" value={pendingWord} />
-			<button type="submit" class="btn btn-sm preset-filled-primary-500">Save word</button>
-			<button type="button" class="btn btn-sm preset-tonal" onclick={hidePopover}>Cancel</button>
-		</form>
-	</Popover.Content>
+	<Popover.Positioner>
+		<Popover.Content class="card preset-filled-primary-500 p-3">
+			<p class="font-bold mb-2">{pendingWord}</p>
+			<form
+				method="POST"
+				action="?/addWord"
+				use:enhance={() => {
+					return async ({ result, update }) => {
+						if (result.type === 'success' || result.type === 'redirect') hidePopover();
+						await update();
+					};
+				}}
+				class="flex gap-2"
+			>
+				<input type="hidden" name="term" value={pendingWord} />
+				<button type="submit" class="btn btn-sm preset-filled-surface-100-900">Save word</button>
+				<button type="button" class="btn btn-sm preset-tonal" onclick={hidePopover}>Cancel</button>
+			</form>
+		</Popover.Content>
+	</Popover.Positioner>
 </Popover>

@@ -120,8 +120,8 @@
 		{@render navContent()}
 	</div>
 
-	<main class="flex-1 overflow-auto p-3 md:p-6">
-		<div class="mx-auto max-w-5xl">
+	<main class="flex-1 min-h-0 overflow-hidden flex flex-col p-3 md:p-6">
+		<div class="mx-auto max-w-5xl w-full flex-1 min-h-0 overflow-auto">
 			{@render children()}
 		</div>
 	</main>

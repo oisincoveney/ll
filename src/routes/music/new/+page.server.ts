@@ -40,7 +40,7 @@ export const actions: Actions = {
 			.returning()
 			.get();
 
-		if (lrcText) saveSongLines(song.id, lrcText);
+		if (lrcText) await saveSongLines(song.id, lrcText);
 
 		redirect(303, `/music/${song.id}`);
 	}

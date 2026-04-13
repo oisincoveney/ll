@@ -121,6 +121,6 @@ export const actions: Actions = {
 		if (!lrcText) return fail(404, { reloadError: 'No lyrics found for this song' });
 
 		db.update(songs).set({ title: metadata.title, artist: metadata.artist, lrcText }).where(eq(songs.id, songId)).run();
-		saveSongLines(songId, lrcText);
+		await saveSongLines(songId, lrcText);
 	}
 };

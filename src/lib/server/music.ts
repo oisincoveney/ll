@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { env } from '$env/dynamic/private';
 import getArtistTitle from 'get-artist-title';
 import { db } from '$lib/server/db';
 import { songLines } from '$lib/server/db/schema';
@@ -13,6 +14,10 @@ const oEmbedSchema = z.object({
 const lrcSearchSchema = z.array(z.object({
 	syncedLyrics: z.string().nullable().optional()
 }));
+
+const deeplResponseSchema = z.object({
+	translations: z.array(z.object({ text: z.string() }))
+});
 
 export async function fetchYoutubeMetadata(youtubeId: string): Promise<{ title: string; artist: string }> {
 	const url = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${youtubeId}&format=json`;
@@ -34,9 +39,32 @@ export async function fetchLrc(title: string, artist: string): Promise<string | 
 	return results.find((r) => r.syncedLyrics)?.syncedLyrics ?? null;
 }
 
-export function saveSongLines(songId: number, lrcText: string): void {
+async function translateLines(lines: string[]): Promise<(string | null)[]> {
+	if (!env.DEEPL_API_KEY || lines.length === 0) return lines.map(() => null);
+	try {
+		const res = await fetch('https://api-free.deepl.com/v2/translate', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `DeepL-Auth-Key ${env.DEEPL_API_KEY}`
+			},
+			body: JSON.stringify({ text: lines, source_lang: 'ES', target_lang: 'EN' })
+		});
+		if (!res.ok) return lines.map(() => null);
+		const parsed = deeplResponseSchema.safeParse(await res.json());
+		if (!parsed.success) return lines.map(() => null);
+		return parsed.data.translations.map((t) => t.text);
+	} catch {
+		return lines.map(() => null);
+	}
+}
+
+export async function saveSongLines(songId: number, lrcText: string): Promise<void> {
 	const parsed = parseLrc(lrcText);
 	if (parsed.length === 0) return;
+
+	const translations = await translateLines(parsed.map((l) => l.text));
+
 	db.delete(songLines).where(eq(songLines.songId, songId)).run();
 	db.insert(songLines)
 		.values(parsed.map((line, i) => ({
@@ -44,7 +72,7 @@ export function saveSongLines(songId: number, lrcText: string): void {
 			lineNumber: i,
 			startMs: line.startMs,
 			spanish: line.text,
-			english: null
+			english: translations[i]
 		})))
 		.run();
 }
