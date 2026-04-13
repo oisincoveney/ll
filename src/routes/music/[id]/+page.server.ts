@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { songs, words } from '$lib/server/db/schema';
+import { songs, songLines, words } from '$lib/server/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { error, fail } from '@sveltejs/kit';
 import { lookupCard, createCard } from '$lib/server/lingq';
