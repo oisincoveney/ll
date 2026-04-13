@@ -27,5 +27,8 @@ jobs:
       - name: Deploy dependencies
         run: rsync -a --delete node_modules/ /home/exedev/ll/node_modules/
 
+      - name: Apply schema changes
+        run: cd /home/exedev/ll && pnpm drizzle-kit push --force
+
       - name: Restart service
         run: sudo systemctl restart ll
