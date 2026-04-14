@@ -4,7 +4,15 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Label } from '$lib/components/ui/label';
-	import { Card, CardContent } from '$lib/components/ui/card';
+	import {
+		Card,
+		CardContent,
+		CardDescription,
+		CardFooter,
+		CardHeader,
+		CardTitle
+	} from '$lib/components/ui/card';
+	import { Badge } from '$lib/components/ui/badge';
 	import { Item, ItemContent, ItemTitle, ItemDescription } from '$lib/components/ui/item';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 
@@ -63,59 +71,82 @@
 	{/if}
 
 	<form method="POST" use:enhance class="flex flex-col gap-4">
-		<div class="flex flex-col gap-1.5">
-			<Label for="youtubeUrl">YouTube URL, ID, or search query</Label>
-			<Input
-				id="youtubeUrl"
-				name="youtubeUrl"
-				type="text"
-				placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ or juanes la camisa negra"
-				value={form?.youtubeInput ?? ''}
-				required
-			/>
-		</div>
+		<Card>
+			<CardHeader>
+				<CardTitle>Find a YouTube video</CardTitle>
+				<CardDescription>Paste a URL/ID or type a search query.</CardDescription>
+			</CardHeader>
+			<CardContent class="space-y-4">
+				<div class="space-y-1.5">
+					<Label for="youtubeUrl">YouTube URL, ID, or search query</Label>
+					<Input
+						id="youtubeUrl"
+						name="youtubeUrl"
+						type="text"
+						placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ or juanes la camisa negra"
+						value={form?.youtubeInput ?? ''}
+						required
+					/>
+				</div>
 
-		<div class="flex flex-col gap-1.5">
-			<Label for="teacherNotes">Teacher notes (optional)</Label>
-			<Textarea
-				id="teacherNotes"
-				name="teacherNotes"
-				rows={3}
-				placeholder={notesPlaceholder}
-				value={form?.teacherNotes ?? ''}
-			/>
-		</div>
+				<div class="space-y-1.5">
+					<Label for="teacherNotes">Teacher notes (optional)</Label>
+					<Textarea
+						id="teacherNotes"
+						name="teacherNotes"
+						rows={3}
+						placeholder={notesPlaceholder}
+						value={form?.teacherNotes ?? ''}
+					/>
+				</div>
+			</CardContent>
+
+			<CardFooter class="justify-start gap-2">
+				{#if form?.candidates && form.candidates.length > 0}
+					<Button type="submit" name="intent" value="search" variant="outline">Refine search</Button>
+				{:else}
+					<Button type="submit" name="intent" value="search">{submitLabel}</Button>
+				{/if}
+			</CardFooter>
+		</Card>
 
 		{#if form?.candidates && form.candidates.length > 0}
-			<div class="space-y-2">
-				<Label>Select the correct video</Label>
-				<input type="hidden" name="selectedYoutubeId" value={selectedYoutubeId} />
-				<ToggleGroup type="single" bind:value={selectedYoutubeId} orientation="vertical" class="w-full">
-					{#each form.candidates as candidate}
-						<ToggleGroupItem
-							value={candidate.youtubeId}
-							variant="outline"
-							class="h-auto w-full justify-start p-3 text-left"
-						>
-							<Item size="sm" variant="default" class="border-0 p-0">
-								<ItemContent>
-									<ItemTitle>{candidate.title}</ItemTitle>
-									<ItemDescription>
-										{candidate.channel} · {formatDuration(candidate.durationSeconds)}
-									</ItemDescription>
-								</ItemContent>
-							</Item>
-						</ToggleGroupItem>
-					{/each}
-				</ToggleGroup>
-			</div>
+			<Card>
+				<CardHeader>
+					<CardTitle>Select the correct video</CardTitle>
+					<CardDescription>Pick one of {form.candidates.length} matches.</CardDescription>
+				</CardHeader>
+				<CardContent class="space-y-3">
+					<input type="hidden" name="selectedYoutubeId" value={selectedYoutubeId} />
+					<ToggleGroup type="single" bind:value={selectedYoutubeId} orientation="vertical" class="w-full gap-2">
+						{#each form.candidates as candidate}
+							<ToggleGroupItem
+								value={candidate.youtubeId}
+								variant="outline"
+								class="h-auto w-full justify-start rounded-lg p-3 text-left"
+							>
+								<Item size="sm" variant="default" class="w-full border-0 p-0">
+									<ItemContent>
+										<div class="flex items-center justify-between gap-3">
+											<div class="space-y-1">
+												<ItemTitle>{candidate.title}</ItemTitle>
+												<ItemDescription>{candidate.channel}</ItemDescription>
+											</div>
+											<Badge variant="outline" class="shrink-0">
+												{formatDuration(candidate.durationSeconds)}
+											</Badge>
+										</div>
+									</ItemContent>
+								</Item>
+							</ToggleGroupItem>
+						{/each}
+					</ToggleGroup>
+				</CardContent>
 
-			<div class="flex gap-2">
-				<Button type="submit" name="intent" value="search" variant="outline">Search again</Button>
-				<Button type="submit" name="intent" value="useSelected">Use selected video</Button>
-			</div>
-		{:else}
-			<Button type="submit" name="intent" value="search">{submitLabel}</Button>
+				<CardFooter class="justify-start gap-2">
+					<Button type="submit" name="intent" value="useSelected">Use selected video</Button>
+				</CardFooter>
+			</Card>
 		{/if}
 	</form>
 </div>
