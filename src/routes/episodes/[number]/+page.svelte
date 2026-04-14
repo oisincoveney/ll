@@ -19,6 +19,16 @@
 	let popoverOpen = $state(false);
 	let anchorEl: HTMLElement | null = $state(null);
 
+	function getSpeakerClasses(speaker: 'T' | 'S' | null): string {
+		if (speaker === 'T') {
+			return 'border-primary/35 bg-primary/10 text-primary';
+		}
+		if (speaker === 'S') {
+			return 'border-emerald-500/35 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400';
+		}
+		return 'border-border bg-muted text-muted-foreground';
+	}
+
 	function showPopup(e: MouseEvent, word: string) {
 		anchorEl = e.target as HTMLElement;
 		pendingWord = word;
@@ -79,7 +89,7 @@
 		</TabsList>
 
 		<TabsContent value="transcript" class="overflow-y-auto min-h-0">
-			<div class="pt-4 relative" style="line-height: 1.8;">
+			<div class="relative pt-4">
 				{#if data.transcript.length > 0}
 					{#if data.episodeSummary}
 						<Card class="mb-4">
@@ -88,22 +98,31 @@
 					{/if}
 
 					{#each data.transcript as turn}
-						<div class="mb-3 flex items-start gap-3">
-							{#if turn.speaker}
-								<span
-									class="mt-[0.55rem] inline-block h-2.5 w-2.5 shrink-0 rounded-full"
-									style="background-color: var(--color-{turn.speaker === 'T' ? 'primary' : 'secondary'}-500);"
-								></span>
-							{:else}
-								<span class="mt-[0.55rem] inline-block h-2.5 w-2.5 shrink-0"></span>
-							{/if}
-							<span class="inline">
+						<div class="mb-4 flex items-start gap-3">
+							<span
+								class={`inline-flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full border text-xs font-semibold ${getSpeakerClasses(turn.speaker)}`}
+							>
+								{turn.speaker ?? '—'}
+							</span>
+							<span
+								class={`inline leading-8 font-normal ${turn.speaker === 'T'
+									? 'text-foreground'
+									: turn.speaker === 'S'
+										? 'text-foreground/90'
+										: 'text-muted-foreground'}`}
+							>
 								{#each turn.words as token}
 									{#if token.clean}
 										{#if data.savedWords.includes(token.clean)}
 											<Badge variant="secondary">{token.display}</Badge>
 										{:else}
-											<Button type="button" variant="link" class="h-auto p-0 text-base" onclick={(e: MouseEvent) => showPopup(e, token.clean)}>{token.display}</Button>
+											<button
+												type="button"
+												class="inline cursor-pointer border-none bg-transparent p-0 text-base font-normal text-inherit underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+												onclick={(e: MouseEvent) => showPopup(e, token.clean)}
+											>
+												{token.display}
+											</button>
 										{/if}
 									{:else}
 										{token.display}
