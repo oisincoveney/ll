@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Popover, PopoverContent } from '$lib/components/ui/popover';
 	import { Button } from '$lib/components/ui/button';
+	import { Badge } from '$lib/components/ui/badge';
 	import { Card, CardContent } from '$lib/components/ui/card';
 	import SongPlayer from '$lib/components/SongPlayer.svelte';
 	import LyricsDisplay from '$lib/components/LyricsDisplay.svelte';
@@ -35,14 +36,7 @@
 </svelte:head>
 
 <div class="flex flex-col gap-4 h-full overflow-hidden">
-	<div class="flex items-center gap-3">
-		<Button href="/videos" variant="outline" size="sm">&larr;</Button>
-		<div class="flex-1">
-			<p class="text-sm text-muted-foreground"><Button href="/videos" variant="link" class="h-auto p-0">Videos</Button></p>
-			<h1 class="text-2xl font-bold">{data.video.title}</h1>
-			<p class="text-muted-foreground">{data.video.channel}</p>
-		</div>
-	</div>
+	<Badge variant="outline" class="w-fit">{data.video.channel}</Badge>
 
 	{#if data.video.teacherNotes}
 		<Card>

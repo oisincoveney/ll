@@ -85,14 +85,6 @@
 </script>
 
 <div class="flex flex-col gap-4 max-w-2xl mx-auto">
-	<div>
-		<p class="text-sm text-muted-foreground">
-			<Button href="/concepts" variant="link" class="h-auto p-0">Concepts</Button> /
-			<Button href="/concepts/{data.categorySlug}" variant="link" class="h-auto p-0">{data.categoryName}</Button> / Practice
-		</p>
-		<h1 class="font-display text-3xl font-semibold">Practice: {data.categoryName}</h1>
-	</div>
-
 	{#if data.pool.length === 0}
 		<Card>
 			<CardContent class="text-center py-6 flex flex-col gap-4">

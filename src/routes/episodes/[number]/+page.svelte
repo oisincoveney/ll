@@ -31,14 +31,8 @@
 	}
 </script>
 
-<div class="h-full overflow-hidden flex flex-col gap-4 p-4 pb-20 md:p-6 md:pb-6">
-	<div class="flex items-center gap-3">
-		<Button href="/episodes" variant="ghost" size="icon-sm">&larr;</Button>
-		<div class="flex-1 min-w-0">
-			<p class="text-xs text-muted-foreground">Episode {data.episode.number}</p>
-			<h1 class="text-lg font-semibold leading-tight truncate">{data.episode.title}</h1>
-		</div>
-		<div class="flex items-center gap-2 shrink-0">
+<div class="h-full overflow-hidden flex flex-col gap-4">
+	<div class="flex items-center justify-end gap-2">
 			{#if data.prevEpisode}
 				<Button href="/episodes/{data.prevEpisode.number}" variant="outline" size="icon-sm" title={data.prevEpisode.title}>&larr;</Button>
 			{/if}
@@ -51,7 +45,6 @@
 				<Switch checked={data.episode.listened} onclick={() => formEl.requestSubmit()} />
 				<noscript><button type="submit">Toggle</button></noscript>
 			</form>
-		</div>
 	</div>
 
 	<div>

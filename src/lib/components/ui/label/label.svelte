@@ -17,4 +17,4 @@
 		className
 	)}
 	{...restProps}
-/>
+></label>

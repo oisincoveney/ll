@@ -4,8 +4,6 @@
 </script>
 
 <div class="flex flex-col gap-4 max-w-2xl mx-auto">
-	<h1 class="text-3xl font-bold">Practice</h1>
-
 	<Card>
 		<CardHeader>
 			<CardTitle>Vocabulary Flashcards</CardTitle>

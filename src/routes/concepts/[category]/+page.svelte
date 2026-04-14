@@ -38,12 +38,6 @@
 
 <div class="flex flex-col gap-4">
 	<div class="flex flex-wrap items-center gap-2 md:gap-4">
-		<div class="flex-1">
-			<p class="text-sm text-muted-foreground">
-				<Button href="/concepts" variant="link" class="h-auto p-0">Concepts</Button> / {data.categoryName}
-			</p>
-			<h1 class="font-display text-3xl font-semibold">{data.categoryName}</h1>
-		</div>
 		<Button href="/concepts/{data.categorySlug}/exercise">Practice</Button>
 		<Badge variant="outline">{data.concepts.length} concepts</Badge>
 		<Badge>{masteredCount} mastered</Badge>

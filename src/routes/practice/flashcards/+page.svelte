@@ -65,13 +65,6 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <div class="flex flex-col gap-4 max-w-2xl mx-auto">
-	<div>
-		<p class="text-sm text-muted-foreground">
-			<Button href="/practice" variant="link" class="h-auto p-0">Practice</Button> / Flashcards
-		</p>
-		<h1 class="font-display text-3xl font-semibold">Vocabulary Flashcards</h1>
-	</div>
-
 	{#if phase === 'setup'}
 		<Card>
 			<CardContent class="pt-4 flex flex-col gap-4">
