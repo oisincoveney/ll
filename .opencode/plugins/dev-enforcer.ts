@@ -57,6 +57,10 @@ export default {
       if (!antipattern.allowed) {
         throw new Error(antipattern.message)
       }
+      const style = runHook('ts-style-guard.sh', toolInput)
+      if (!style.allowed) {
+        throw new Error(style.message)
+      }
       return
     }
 

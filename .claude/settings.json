@@ -3,47 +3,47 @@
     "mode": "default",
     "rules": [
       {
+        "tool": "Bash",
         "decision": "deny",
         "if": "Bash(rm -rf|git reset --hard|git push --force|git push -f )",
-        "reason": "Destructive commands require explicit user approval",
-        "tool": "Bash"
+        "reason": "Destructive commands require explicit user approval"
       },
       {
+        "tool": "Read",
         "decision": "allow",
-        "reason": "Read-only file access",
-        "tool": "Read"
+        "reason": "Read-only file access"
       },
       {
+        "tool": "Glob",
         "decision": "allow",
-        "reason": "Read-only search",
-        "tool": "Glob"
+        "reason": "Read-only search"
       },
       {
+        "tool": "Grep",
         "decision": "allow",
-        "reason": "Read-only search",
-        "tool": "Grep"
+        "reason": "Read-only search"
       },
       {
+        "tool": "Bash",
         "decision": "allow",
         "if": "Bash(svelte-kit sync && svelte-check --tsconfig ./tsconfig.json|svelte-check --tsconfig ./tsconfig.json|vitest run|git status|git diff|git log|bd *)",
-        "reason": "Safe verification and task tracking",
-        "tool": "Bash"
+        "reason": "Safe verification and task tracking"
       },
       {
+        "tool": "Bash",
         "decision": "ask",
         "if": "Bash(git commit*|git push*)",
-        "reason": "Git operations require review",
-        "tool": "Bash"
+        "reason": "Git operations require review"
       },
       {
+        "tool": "Edit",
         "decision": "ask",
-        "reason": "Code changes require approval",
-        "tool": "Edit"
+        "reason": "Code changes require approval"
       },
       {
+        "tool": "Write",
         "decision": "ask",
-        "reason": "File creation requires approval",
-        "tool": "Write"
+        "reason": "File creation requires approval"
       }
     ]
   },
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/post-edit-check.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/post-edit-check.sh",
             "timeout": 60
           }
         ]
@@ -77,12 +77,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/import-validator.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/ts-style-guard.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/import-validator.sh",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": ".claude/hooks/ai-antipattern-guard.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/ai-antipattern-guard.sh",
             "timeout": 10
           }
         ]
@@ -92,12 +97,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/destructive-command-guard.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/destructive-command-guard.sh",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": ".claude/hooks/block-coauthor.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/block-coauthor.sh",
             "timeout": 5
           }
         ]
@@ -107,7 +112,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/block-todowrite.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/block-todowrite.sh",
             "timeout": 5
           }
         ]
@@ -118,7 +123,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/context-bootstrap.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/context-bootstrap.sh",
             "timeout": 10
           }
         ]
@@ -138,7 +143,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/pre-stop-verification.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/pre-stop-verification.sh",
             "timeout": 30
           }
         ]
@@ -149,7 +154,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/context-injector.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/context-injector.sh",
             "timeout": 5
           }
         ]

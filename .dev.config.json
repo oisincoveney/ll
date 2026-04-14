@@ -1,0 +1,28 @@
+{
+  "language": "typescript",
+  "variant": "ts-fullstack",
+  "framework": "SvelteKit",
+  "packageManager": "pnpm",
+  "commands": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "test": "vitest run",
+    "typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "lint": "svelte-check --tsconfig ./tsconfig.json",
+    "format": "prettier --write ."
+  },
+  "skills": [
+    "code-quality",
+    "architecture",
+    "testing",
+    "ai-behavior",
+    "component-patterns",
+    "state-management",
+    "styling-ui",
+    "performance"
+  ],
+  "tools": ["beads", "contract-driven"],
+  "workflow": "idd",
+  "contractDriven": true,
+  "targets": ["claude", "codex", "opencode", "cursor", "lefthook"]
+}

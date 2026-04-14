@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/context-bootstrap.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/context-bootstrap.sh",
             "timeout": 10
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/context-injector.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/context-injector.sh",
             "timeout": 5
           }
         ]
@@ -28,12 +28,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/import-validator.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/ts-style-guard.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/import-validator.sh",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": ".codex/hooks/ai-antipattern-guard.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/ai-antipattern-guard.sh",
             "timeout": 10
           }
         ]
@@ -43,12 +48,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/destructive-command-guard.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/destructive-command-guard.sh",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": ".codex/hooks/block-coauthor.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/block-coauthor.sh",
             "timeout": 5
           }
         ]
@@ -58,7 +63,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/block-todowrite.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/block-todowrite.sh",
             "timeout": 5
           }
         ]
@@ -70,7 +75,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/post-edit-check.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/post-edit-check.sh",
             "timeout": 60
           }
         ]
@@ -81,7 +86,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/pre-stop-verification.sh",
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .codex/hooks/pre-stop-verification.sh",
             "timeout": 30
           }
         ]
