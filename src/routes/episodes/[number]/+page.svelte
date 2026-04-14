@@ -21,10 +21,10 @@
 
 	function getSpeakerClasses(speaker: 'T' | 'S' | null): string {
 		if (speaker === 'T') {
-			return 'border-primary/35 bg-primary/10 text-primary';
+			return 'border-primary/30 bg-primary/10 text-foreground';
 		}
 		if (speaker === 'S') {
-			return 'border-emerald-500/35 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400';
+			return 'border-emerald-500/30 bg-emerald-500/10 text-foreground';
 		}
 		return 'border-border bg-muted text-muted-foreground';
 	}
@@ -104,13 +104,7 @@
 							>
 								{turn.speaker ?? '—'}
 							</span>
-							<span
-								class={`inline leading-8 font-normal ${turn.speaker === 'T'
-									? 'text-foreground'
-									: turn.speaker === 'S'
-										? 'text-foreground/90'
-										: 'text-muted-foreground'}`}
-							>
+							<span class={`inline text-base leading-8 font-normal ${turn.speaker ? 'text-foreground' : 'text-muted-foreground'}`}>
 								{#each turn.words as token}
 									{#if token.clean}
 										{#if data.savedWords.includes(token.clean)}

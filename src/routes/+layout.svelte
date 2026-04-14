@@ -6,8 +6,6 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Avatar, AvatarImage, AvatarFallback } from '$lib/components/ui/avatar';
 	import { Separator } from '$lib/components/ui/separator';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Card, CardContent, CardHeader } from '$lib/components/ui/card';
 
 	let { data, children } = $props();
 
@@ -65,17 +63,6 @@
 		return crumbs;
 	});
 
-	const pageHeading = $derived.by(() => {
-		if ($page.url.pathname === '/') {
-			return { section: 'Overview', title: 'Language Learner' };
-		}
-		const currentCrumb = breadcrumbs[breadcrumbs.length - 1];
-		const parentCrumb = breadcrumbs.length > 1 ? breadcrumbs[breadcrumbs.length - 2] : null;
-		return {
-			section: parentCrumb ? parentCrumb.label : 'Workspace',
-			title: currentCrumb.label
-		};
-	});
 </script>
 
 <svelte:head>
@@ -84,62 +71,54 @@
 
 <div class="flex h-screen bg-background">
 	<!-- Desktop sidebar -->
-	<aside class="hidden md:block w-56 shrink-0 border-r border-border bg-background">
-		<Card class="h-full rounded-none border-0">
-			<CardHeader class="gap-2">
-				<Button href="/" variant="ghost" class="h-auto justify-start px-1 py-1 text-base font-semibold tracking-tight">LL</Button>
-				<Badge variant="outline" class="w-fit">Language Transfer</Badge>
-			</CardHeader>
-			<CardContent class="flex h-[calc(100%-5.5rem)] flex-col gap-3 px-2 pb-3">
-				<nav class="flex-1 space-y-1 overflow-y-auto">
-					{#each navItems as item}
-						<Button
-							href={item.href}
-							variant={isActive(item.href, item.exact) ? 'secondary' : 'ghost'}
-							size="sm"
-							class="w-full justify-start gap-2.5"
-						>
-							<item.icon size={16} />
-							{item.label}
-						</Button>
-					{/each}
-				</nav>
-				<Separator />
-				<form method="POST" action="/?/sync" use:enhance>
-					<Button type="submit" variant="outline" size="sm" class="w-full">Sync LingQ</Button>
+	<aside class="hidden md:flex w-48 shrink-0 flex-col border-r border-border bg-background">
+		<div class="px-3 py-3">
+			<Button href="/" variant="ghost" class="h-auto justify-start px-1 py-1 text-sm font-semibold tracking-tight">LL</Button>
+			<p class="px-1 text-xs text-muted-foreground">Language Transfer</p>
+		</div>
+		<nav class="flex-1 space-y-1 overflow-y-auto px-2">
+			{#each navItems as item}
+				<Button
+					href={item.href}
+					variant={isActive(item.href, item.exact) ? 'secondary' : 'ghost'}
+					size="sm"
+					class="w-full justify-start gap-2.5"
+				>
+					<item.icon size={15} />
+					{item.label}
+				</Button>
+			{/each}
+		</nav>
+		<div class="flex flex-col gap-2 px-2 py-3">
+			<Separator />
+			<form method="POST" action="/?/sync" use:enhance>
+				<Button type="submit" variant="outline" size="sm" class="w-full">Sync LingQ</Button>
+			</form>
+			{#if data.user}
+				<div class="flex items-center gap-2 px-1">
+					<Avatar size="sm">
+						{#if data.user.avatar}
+							<AvatarImage src={data.user.avatar} alt={data.user.name ?? 'User'} referrerpolicy="no-referrer" />
+						{/if}
+						<AvatarFallback class="text-xs">{(data.user.name ?? data.user.email)[0].toUpperCase()}</AvatarFallback>
+					</Avatar>
+					<span class="max-w-[7.5rem] truncate text-xs text-muted-foreground">{data.user.name ?? data.user.email}</span>
+				</div>
+				<form method="POST" action="/auth/logout">
+					<Button type="submit" variant="ghost" size="sm" class="w-full justify-start gap-2">
+						<LogOut size={14} />
+						Sign out
+					</Button>
 				</form>
-				{#if data.user}
-					<div class="flex items-center gap-2 px-1">
-						<Avatar size="sm">
-							{#if data.user.avatar}
-								<AvatarImage src={data.user.avatar} alt={data.user.name ?? 'User'} referrerpolicy="no-referrer" />
-							{/if}
-							<AvatarFallback class="text-xs">{(data.user.name ?? data.user.email)[0].toUpperCase()}</AvatarFallback>
-						</Avatar>
-						<Badge variant="secondary" class="max-w-[8.5rem] truncate">{data.user.name ?? data.user.email}</Badge>
-					</div>
-					<form method="POST" action="/auth/logout">
-						<Button type="submit" variant="ghost" size="sm" class="w-full justify-start gap-2">
-							<LogOut size={14} />
-							Sign out
-						</Button>
-					</form>
-				{/if}
-			</CardContent>
-		</Card>
+			{/if}
+		</div>
 	</aside>
 
 	<!-- Main content -->
 	<main class="flex-1 min-h-0 overflow-hidden flex flex-col">
 		<header class="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-			<div class="px-4 py-3 md:px-6 md:py-4">
-				<div class="flex items-center justify-between gap-3">
-					<div class="min-w-0">
-						<Badge variant="outline" class="mb-1">{pageHeading.section}</Badge>
-						<h1 class="truncate text-lg font-semibold text-foreground md:text-xl">{pageHeading.title}</h1>
-					</div>
-				</div>
-				<nav aria-label="Breadcrumb" class="mt-2 flex items-center gap-0.5 overflow-x-auto">
+			<div class="px-4 py-2 md:px-6">
+				<nav aria-label="Breadcrumb" class="flex items-center gap-0.5 overflow-x-auto">
 					{#each breadcrumbs as crumb, index}
 						{#if index > 0}
 							<ChevronRight size={12} class="shrink-0 text-muted-foreground" />
@@ -149,7 +128,7 @@
 							variant="ghost"
 							size="sm"
 							aria-current={crumb.current ? 'page' : undefined}
-							class="h-7 whitespace-nowrap px-2 {crumb.current ? 'text-foreground' : 'text-muted-foreground'}"
+							class="h-6 whitespace-nowrap px-2 text-xs {crumb.current ? 'text-foreground' : 'text-muted-foreground'}"
 						>
 							{crumb.label}
 						</Button>

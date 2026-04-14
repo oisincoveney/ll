@@ -31,8 +31,6 @@
 	}
 
 	let {
-		title,
-		subtitle,
 		teacherNotes,
 		youtubeId,
 		words,
@@ -45,8 +43,6 @@
 		reloadLabel,
 		form
 	}: {
-		title: string;
-		subtitle: string;
 		teacherNotes: string | null;
 		youtubeId: string;
 		words: MediaWord[];
@@ -83,11 +79,6 @@
 </script>
 
 <div class="h-full overflow-hidden flex flex-col gap-4">
-	<div>
-		<h2 class="text-2xl font-bold">{title}</h2>
-		<p class="text-muted-foreground">{subtitle}</p>
-	</div>
-
 	{#if teacherNotes}
 		<Card>
 			<CardContent class="py-3 px-4 text-sm text-muted-foreground">{teacherNotes}</CardContent>

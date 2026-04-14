@@ -27,9 +27,9 @@
 </script>
 
 <div class="max-w-xl">
-	<div class="mb-6 flex items-center gap-3">
+	<div class="mb-2 flex items-center gap-3">
 		<Button href={backHref} variant="outline" size="sm">&larr;</Button>
-		<h1 class="text-3xl font-bold">{title}</h1>
+		<span class="text-sm text-muted-foreground">{title}</span>
 	</div>
 
 	{#if form?.error}

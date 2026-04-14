@@ -9,8 +9,6 @@
 </svelte:head>
 
 <MediaDetailPage
-	title={data.video.title}
-	subtitle={data.video.channel}
 	teacherNotes={data.video.teacherNotes}
 	youtubeId={data.video.youtubeId}
 	words={data.videoWords}
