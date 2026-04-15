@@ -38,6 +38,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	return {
 		categoryName,
 		categorySlug,
+		breadcrumbLabel: categoryName,
 		concepts: categoryConcepts.map((c, i) => ({
 			id: allConcepts.indexOf(c) + 1,
 			slug: c.slug,

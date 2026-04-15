@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const trackedWords = songWords.map((w) => w.spanish.toLowerCase());
 
-	return { song, lines, songWords, trackedWords };
+	return { song, lines, songWords, trackedWords, breadcrumbLabel: song.title };
 };
 
 export const actions: Actions = {

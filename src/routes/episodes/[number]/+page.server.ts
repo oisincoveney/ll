@@ -86,7 +86,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		savedWords: [...savedWords],
 		transcript,
 		prevEpisode: prevEpisode ?? null,
-		nextEpisode: nextEpisode ?? null
+		nextEpisode: nextEpisode ?? null,
+		breadcrumbLabel: episode.title
 	};
 };
 

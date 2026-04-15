@@ -42,8 +42,9 @@
 			.join(' ');
 	}
 
-	function getSegmentLabel(segment: string): string {
+	function getSegmentLabel(segment: string, isCurrent: boolean): string {
 		if (routeLabels[segment]) return routeLabels[segment];
+		if (isCurrent && $page.data.breadcrumbLabel) return $page.data.breadcrumbLabel;
 		if (/^\d+$/.test(segment)) return `#${segment}`;
 		return toTitleCase(segment);
 	}
@@ -54,11 +55,8 @@
 		let currentPath = '';
 		for (const segment of segments) {
 			currentPath += `/${segment}`;
-			crumbs.push({
-				href: currentPath,
-				label: getSegmentLabel(segment),
-				current: currentPath === $page.url.pathname
-			});
+			const isCurrent = currentPath === $page.url.pathname;
+			crumbs.push({ href: currentPath, label: getSegmentLabel(segment, isCurrent), current: isCurrent });
 		}
 		return crumbs;
 	});

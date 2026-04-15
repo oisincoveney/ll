@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const trackedWords = videoWords.map((w) => w.spanish.toLowerCase());
 
-	return { video, lines, videoWords, trackedWords };
+	return { video, lines, videoWords, trackedWords, breadcrumbLabel: video.title };
 };
 
 export const actions: Actions = {
