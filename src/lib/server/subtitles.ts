@@ -16,10 +16,22 @@ const deeplResponseSchema = z.object({
 	translations: z.array(z.object({ text: z.string() }))
 });
 
+function normalizeText(raw: string): string {
+	return striptags(raw)
+		.replace(/&nbsp;/g, ' ')
+		.replace(/&amp;/g, '&')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&quot;/g, '"')
+		.replace(/&#39;/g, "'")
+		.replace(/\s+/g, ' ')
+		.trim();
+}
+
 export function parseSrt(srt: string): SubtitleLine[] {
 	const raw = parseSync(srt)
 		.filter((node): node is Extract<typeof node, { type: 'cue' }> => node.type === 'cue')
-		.map((node) => ({ startMs: node.data.start, text: striptags(node.data.text).trim() }))
+		.map((node) => ({ startMs: node.data.start, text: normalizeText(node.data.text) }))
 		.filter((line) => line.text.length > 0)
 		.sort((a, b) => a.startMs - b.startMs);
 
