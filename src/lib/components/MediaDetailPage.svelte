@@ -41,6 +41,7 @@
 		emptyTextTrackMessage,
 		reloadAction,
 		reloadLabel,
+		deleteAction,
 		form
 	}: {
 		teacherNotes: string | null;
@@ -53,6 +54,7 @@
 		emptyTextTrackMessage: string;
 		reloadAction: string;
 		reloadLabel: string;
+		deleteAction?: string;
 		form?: MediaFormState | null;
 	} = $props();
 
@@ -132,21 +134,28 @@
 			<Card class="flex flex-col overflow-hidden">
 				<div class="flex items-center justify-between p-4 pb-2">
 					<h3 class="text-base font-semibold">{textTrackLabel}</h3>
-					<form
-						method="POST"
-						action={reloadAction}
-						use:enhance={() => {
-							reloading = true;
-							return ({ update }) => {
-								reloading = false;
-								update();
-							};
-						}}
-					>
-						<Button type="submit" size="sm" variant="outline" disabled={reloading}>
-							{reloading ? 'Reloading…' : reloadLabel}
-						</Button>
-					</form>
+					<div class="flex gap-2">
+						<form
+							method="POST"
+							action={reloadAction}
+							use:enhance={() => {
+								reloading = true;
+								return ({ update }) => {
+									reloading = false;
+									update();
+								};
+							}}
+						>
+							<Button type="submit" size="sm" variant="outline" disabled={reloading}>
+								{reloading ? 'Reloading…' : reloadLabel}
+							</Button>
+						</form>
+						{#if deleteAction}
+							<form method="POST" action={deleteAction} use:enhance>
+								<Button type="submit" size="sm" variant="destructive">Delete</Button>
+							</form>
+						{/if}
+					</div>
 				</div>
 				{#if form?.reloadError}
 					<p class="px-4 text-sm text-muted-foreground">{form.reloadError}</p>
@@ -159,22 +168,28 @@
 			<Card>
 				<CardContent class="py-4 text-center text-muted-foreground">
 					<p>{emptyTextTrackMessage}</p>
-					<form
-						method="POST"
-						action={reloadAction}
-						use:enhance={() => {
-							reloading = true;
-							return ({ update }) => {
-								reloading = false;
-								update();
-							};
-						}}
-						class="mt-2"
-					>
-						<Button type="submit" size="sm" variant="outline" disabled={reloading}>
-							{reloading ? 'Reloading…' : reloadLabel}
-						</Button>
-					</form>
+					<div class="flex justify-center gap-2 mt-2">
+						<form
+							method="POST"
+							action={reloadAction}
+							use:enhance={() => {
+								reloading = true;
+								return ({ update }) => {
+									reloading = false;
+									update();
+								};
+							}}
+						>
+							<Button type="submit" size="sm" variant="outline" disabled={reloading}>
+								{reloading ? 'Reloading…' : reloadLabel}
+							</Button>
+						</form>
+						{#if deleteAction}
+							<form method="POST" action={deleteAction} use:enhance>
+								<Button type="submit" size="sm" variant="destructive">Delete</Button>
+							</form>
+						{/if}
+					</div>
 					{#if form?.reloadError}
 						<p class="mt-1 text-sm text-muted-foreground">{form.reloadError}</p>
 					{/if}

@@ -1,7 +1,7 @@
 import { db } from '$lib/server/db';
 import { songs, songLines, words } from '$lib/server/db/schema';
 import { eq, and } from 'drizzle-orm';
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { lookupCard, createCard } from '$lib/server/lingq';
 import { fetchYoutubeMetadata, saveSongLines } from '$lib/server/music';
 import type { PageServerLoad, Actions } from './$types';
@@ -121,5 +121,16 @@ export const actions: Actions = {
 
 		const hasSubs = await saveSongLines(songId, song.youtubeId);
 		if (!hasSubs) return fail(404, { reloadError: 'No Spanish subtitles found for this video' });
+	},
+
+	deleteSong: async ({ params, locals }) => {
+		const user = locals.user;
+		if (!user) return fail(401, { deleteError: 'Not authenticated' });
+
+		const songId = parseInt(params.id);
+		if (isNaN(songId)) return fail(400, { deleteError: 'Invalid song' });
+
+		db.delete(songs).where(eq(songs.id, songId)).run();
+		redirect(303, '/music');
 	}
 };

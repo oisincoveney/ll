@@ -19,5 +19,6 @@
 	emptyTextTrackMessage="No lyrics added yet."
 	reloadAction="?/reloadLyrics"
 	reloadLabel="Reload lyrics"
+	deleteAction="?/deleteSong"
 	{form}
 />
