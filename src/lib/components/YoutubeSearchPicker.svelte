@@ -3,7 +3,6 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Badge } from '$lib/components/ui/badge';
-	import { CardDescription } from '$lib/components/ui/card';
 	import {
 		Item,
 		ItemContent,
@@ -148,43 +147,45 @@
 		<p class="text-sm text-destructive">{searchError}</p>
 	{:else if candidates.length > 0}
 		<div class="flex flex-col gap-1.5">
-			<p class="text-xs text-muted-foreground">{candidates.length} results — pick one</p>
 			<ToggleGroup type="single" bind:value={selectedId} class="w-full flex-col items-stretch gap-1">
 				{#each candidates as candidate (candidate.youtubeId)}
 					{@const subStatus = subsStatus.get(candidate.youtubeId)}
-					<ToggleGroupItem
-						value={candidate.youtubeId}
-						variant="outline"
-						class="h-auto w-full justify-start p-0 text-left"
-					>
-						<Item size="sm" variant="default" class="w-full flex-nowrap border-0">
-							<ItemMedia variant="image" class="aspect-video w-20 shrink-0 rounded">
-								<img
-									src={thumbUrl(candidate.youtubeId)}
-									alt={candidate.title}
-									loading="lazy"
-									width={320}
-									height={180}
-								/>
-							</ItemMedia>
+					{#if subStatus === null}
+						<Item variant="outline" class="animate-pulse flex-nowrap">
+							<ItemMedia variant="image" class="aspect-video w-20 shrink-0 rounded" />
 							<ItemContent class="min-w-0">
-								<ItemTitle class="w-full truncate">{candidate.title}</ItemTitle>
-								<ItemDescription class="truncate">{candidate.channel}</ItemDescription>
+								<ItemTitle class="w-3/4 rounded bg-muted text-transparent">placeholder</ItemTitle>
+								<ItemDescription class="w-1/2 rounded bg-muted text-transparent">pl</ItemDescription>
 							</ItemContent>
-							<div class="mr-2 flex shrink-0 flex-col items-end gap-1">
-								<Badge variant="outline" class="text-xs">
-									{formatDuration(candidate.durationSeconds)}
-								</Badge>
-								{#if subStatus === null}
-									<Badge variant="outline" class="text-xs text-muted-foreground">…</Badge>
-								{:else if subStatus}
-									<Badge variant="secondary" class="text-xs">lyrics</Badge>
-								{:else}
-									<Badge variant="outline" class="text-xs text-muted-foreground">no lyrics</Badge>
-								{/if}
-							</div>
 						</Item>
-					</ToggleGroupItem>
+					{:else if subStatus}
+						<ToggleGroupItem
+							value={candidate.youtubeId}
+							variant="outline"
+							class="h-auto w-full justify-start p-0 text-left"
+						>
+							<Item size="sm" variant="default" class="w-full flex-nowrap border-0">
+								<ItemMedia variant="image" class="aspect-video w-20 shrink-0 rounded">
+									<img
+										src={thumbUrl(candidate.youtubeId)}
+										alt={candidate.title}
+										loading="lazy"
+										width={320}
+										height={180}
+									/>
+								</ItemMedia>
+								<ItemContent class="min-w-0">
+									<ItemTitle class="w-full truncate">{candidate.title}</ItemTitle>
+									<ItemDescription class="truncate">{candidate.channel}</ItemDescription>
+								</ItemContent>
+								<div class="mr-2 shrink-0">
+									<Badge variant="outline" class="text-xs">
+										{formatDuration(candidate.durationSeconds)}
+									</Badge>
+								</div>
+							</Item>
+						</ToggleGroupItem>
+					{/if}
 				{/each}
 			</ToggleGroup>
 		</div>
