@@ -26,6 +26,8 @@ This project is configured with @oisincoveney/dev. Hooks and configs enforce mos
 
 <!-- END @oisincoveney/dev managed block -->
 
+@.claude/docs/dev-setup.md
+
 # Coding Standards
 
 These rules are mandatory. Rules marked ⛔ are enforced by automated hooks — your Write/Edit will be blocked if you violate them. Rules marked 📋 require your judgment and are not mechanically enforced.
