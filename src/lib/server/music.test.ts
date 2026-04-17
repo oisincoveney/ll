@@ -5,12 +5,12 @@ import { songs, songLines } from './db/schema';
 import { extractYoutubeId } from '$lib/lrc';
 import { eq } from 'drizzle-orm';
 
-vi.mock('$lib/server/subtitles', () => ({
+vi.mock('./subtitles', () => ({
 	fetchSubtitles: vi.fn(),
 	translateLines: vi.fn(async (lines: string[]) => lines.map(() => null))
 }));
 
-import { fetchSubtitles } from '$lib/server/subtitles';
+import { fetchSubtitles } from './subtitles';
 
 const OEMBED_RESPONSE = {
 	title: 'Mancha de Rolando - Arde la ciudad (video oficial) HD',
@@ -34,7 +34,7 @@ beforeEach(() => {
 		if (url.includes('deepl')) return new Response(JSON.stringify({ translations: [] }));
 		throw new Error(`Unexpected fetch call: ${url}`);
 	}));
-	vi.mocked(fetchSubtitles).mockReturnValue(SAMPLE_LINES);
+	vi.mocked(fetchSubtitles).mockReturnValue({ ok: true, lines: SAMPLE_LINES, lang: 'es' });
 });
 
 afterEach(() => {
@@ -74,7 +74,7 @@ describe('saveSongLines', () => {
 
 		const saved = await saveSongLines(song.id, youtubeId);
 
-		expect(saved).toBe(true);
+		expect(saved.ok).toBe(true);
 		const lines = db.select().from(songLines).where(eq(songLines.songId, song.id)).all();
 		expect(lines).toHaveLength(3);
 		expect(lines[0].startMs).toBe(15_040);
@@ -96,7 +96,7 @@ describe('saveSongLines', () => {
 		await saveSongLines(song.id, youtubeId);
 
 		// Simulate reload with fewer lines
-		vi.mocked(fetchSubtitles).mockReturnValue(UPDATED_LINES);
+		vi.mocked(fetchSubtitles).mockReturnValue({ ok: true, lines: UPDATED_LINES, lang: 'es' });
 		await saveSongLines(song.id, youtubeId);
 
 		const lines = db.select().from(songLines).where(eq(songLines.songId, song.id)).all();
@@ -104,8 +104,8 @@ describe('saveSongLines', () => {
 		expect(lines[1].spanish).toBe('Arde la ciudad');
 	});
 
-	it('returns false when yt-dlp finds no subtitles', async () => {
-		vi.mocked(fetchSubtitles).mockReturnValue(null);
+	it('returns failure result when yt-dlp finds no subtitles', async () => {
+		vi.mocked(fetchSubtitles).mockReturnValue({ ok: false, reason: 'no-subs' });
 
 		const song = db.insert(songs).values({
 			title: 'No Subtitles',
@@ -118,10 +118,30 @@ describe('saveSongLines', () => {
 		insertedSongId = song.id;
 
 		const saved = await saveSongLines(song.id, 'jNQXAC9IVRw');
-		expect(saved).toBe(false);
+		expect(saved.ok).toBe(false);
+		if (saved.ok) return;
+		expect(saved.reason).toBe('no-subs');
 
 		const lines = db.select().from(songLines).where(eq(songLines.songId, song.id)).all();
 		expect(lines).toHaveLength(0);
+	});
+
+	it('propagates yt-dlp-error reason with detail', async () => {
+		vi.mocked(fetchSubtitles).mockReturnValue({
+			ok: false, reason: 'yt-dlp-error', detail: 'bot challenge'
+		});
+
+		const song = db.insert(songs).values({
+			title: 'Blocked', artist: 'x', youtubeId: 'jNQXAC9IVRw',
+			lrcText: null, teacherNotes: null, createdAt: new Date().toISOString()
+		}).returning().get();
+		insertedSongId = song.id;
+
+		const saved = await saveSongLines(song.id, 'jNQXAC9IVRw');
+		expect(saved.ok).toBe(false);
+		if (saved.ok) return;
+		expect(saved.reason).toBe('yt-dlp-error');
+		expect(saved.detail).toBe('bot challenge');
 	});
 });
 

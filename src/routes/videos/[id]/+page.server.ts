@@ -4,6 +4,7 @@ import { eq, and } from 'drizzle-orm';
 import { error, fail } from '@sveltejs/kit';
 import { lookupCard, createCard } from '$lib/server/lingq';
 import { fetchVideoMetadata, saveVideoLines } from '$lib/server/videos';
+import { subtitleFailureMessage } from '../../../lib/server/subtitles';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -120,7 +121,7 @@ export const actions: Actions = {
 
 		db.update(videos).set({ title: metadata.title, channel: metadata.channel }).where(eq(videos.id, videoId)).run();
 
-		const hasSubs = await saveVideoLines(videoId, video.youtubeId);
-		if (!hasSubs) return fail(404, { reloadError: 'No Spanish subtitles found for this video' });
+		const result = await saveVideoLines(videoId, video.youtubeId);
+		if (!result.ok) return fail(404, { reloadError: subtitleFailureMessage(result.reason) });
 	}
 };

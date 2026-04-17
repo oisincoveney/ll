@@ -4,6 +4,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { extractYoutubeId } from '$lib/lrc';
 import { fetchYoutubeMetadata, saveSongLines } from '$lib/server/music';
 import { searchYoutubeCandidates } from '$lib/server/youtube-search';
+import { subtitleFailureMessage } from '../../../lib/server/subtitles';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
@@ -57,10 +58,10 @@ export const actions: Actions = {
 			.returning()
 			.get();
 
-		const hasSubs = await saveSongLines(song.id, youtubeId);
-		if (!hasSubs) {
+		const result = await saveSongLines(song.id, youtubeId);
+		if (!result.ok) {
 			return fail(400, {
-				error: 'No Spanish subtitles found for this video. Try a different video.',
+				error: subtitleFailureMessage(result.reason),
 				youtubeInput,
 				teacherNotes
 			});

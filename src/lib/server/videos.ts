@@ -1,8 +1,12 @@
 import { z } from 'zod';
 import { db } from '$lib/server/db';
 import { videoLines } from '$lib/server/db/schema';
-import { fetchSubtitles, translateLines } from '$lib/server/subtitles';
+import { fetchSubtitles, translateLines, type SubtitleFailureReason } from './subtitles';
 import { eq } from 'drizzle-orm';
+
+export type SaveVideoLinesResult =
+	| { ok: true }
+	| { ok: false; reason: SubtitleFailureReason; detail?: string };
 
 const oEmbedSchema = z.object({
 	title: z.string(),
@@ -17,10 +21,11 @@ export async function fetchVideoMetadata(youtubeId: string): Promise<{ title: st
 	return { title: data.title, channel: data.author_name };
 }
 
-export async function saveVideoLines(videoId: number, youtubeId: string): Promise<boolean> {
-	const lines = fetchSubtitles(youtubeId);
-	if (!lines || lines.length === 0) return false;
+export async function saveVideoLines(videoId: number, youtubeId: string): Promise<SaveVideoLinesResult> {
+	const result = fetchSubtitles(youtubeId);
+	if (!result.ok) return { ok: false, reason: result.reason, detail: result.detail };
 
+	const { lines } = result;
 	const translations = await translateLines(lines.map((l) => l.text));
 
 	db.delete(videoLines).where(eq(videoLines.videoId, videoId)).run();
@@ -36,5 +41,5 @@ export async function saveVideoLines(videoId: number, youtubeId: string): Promis
 		)
 		.run();
 
-	return true;
+	return { ok: true };
 }

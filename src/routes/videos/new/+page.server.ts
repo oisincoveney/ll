@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm';
 import { extractYoutubeId } from '$lib/lrc';
 import { fetchVideoMetadata, saveVideoLines } from '$lib/server/videos';
 import { searchYoutubeCandidates } from '$lib/server/youtube-search';
+import { subtitleFailureMessage } from '../../../lib/server/subtitles';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
@@ -57,11 +58,11 @@ export const actions: Actions = {
 			.returning()
 			.get();
 
-		const hasSubs = await saveVideoLines(video.id, youtubeId);
-		if (!hasSubs) {
+		const result = await saveVideoLines(video.id, youtubeId);
+		if (!result.ok) {
 			db.delete(videos).where(eq(videos.id, video.id)).run();
 			return fail(400, {
-				error: 'No Spanish subtitles found for this video. Try a different video.',
+				error: subtitleFailureMessage(result.reason),
 				youtubeInput,
 				teacherNotes
 			});

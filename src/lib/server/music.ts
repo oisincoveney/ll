@@ -2,8 +2,12 @@ import { z } from 'zod';
 import getArtistTitle from 'get-artist-title';
 import { db } from '$lib/server/db';
 import { songLines } from '$lib/server/db/schema';
-import { fetchSubtitles, translateLines } from '$lib/server/subtitles';
+import { fetchSubtitles, translateLines, type SubtitleFailureReason } from './subtitles';
 import { eq } from 'drizzle-orm';
+
+export type SaveSongLinesResult =
+	| { ok: true }
+	| { ok: false; reason: SubtitleFailureReason; detail?: string };
 
 const oEmbedSchema = z.object({
 	title: z.string(),
@@ -22,10 +26,11 @@ export async function fetchYoutubeMetadata(youtubeId: string): Promise<{ title: 
 	return { artist, title };
 }
 
-export async function saveSongLines(songId: number, youtubeId: string): Promise<boolean> {
-	const lines = fetchSubtitles(youtubeId);
-	if (!lines || lines.length === 0) return false;
+export async function saveSongLines(songId: number, youtubeId: string): Promise<SaveSongLinesResult> {
+	const result = fetchSubtitles(youtubeId);
+	if (!result.ok) return { ok: false, reason: result.reason, detail: result.detail };
 
+	const { lines } = result;
 	const translations = await translateLines(lines.map((l) => l.text));
 
 	db.delete(songLines).where(eq(songLines.songId, songId)).run();
@@ -41,5 +46,5 @@ export async function saveSongLines(songId: number, youtubeId: string): Promise<
 		)
 		.run();
 
-	return true;
+	return { ok: true };
 }

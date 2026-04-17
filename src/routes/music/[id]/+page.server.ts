@@ -4,6 +4,7 @@ import { eq, and } from 'drizzle-orm';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { lookupCard, createCard } from '$lib/server/lingq';
 import { fetchYoutubeMetadata, saveSongLines } from '$lib/server/music';
+import { subtitleFailureMessage } from '../../../lib/server/subtitles';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -119,8 +120,8 @@ export const actions: Actions = {
 
 		db.update(songs).set({ title: metadata.title, artist: metadata.artist }).where(eq(songs.id, songId)).run();
 
-		const hasSubs = await saveSongLines(songId, song.youtubeId);
-		if (!hasSubs) return fail(404, { reloadError: 'No Spanish subtitles found for this video' });
+		const result = await saveSongLines(songId, song.youtubeId);
+		if (!result.ok) return fail(404, { reloadError: subtitleFailureMessage(result.reason) });
 	},
 
 	deleteSong: async ({ params, locals }) => {
