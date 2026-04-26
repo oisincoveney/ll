@@ -1,9 +1,7 @@
 ---
+name: testing
 description: Test-driven development, co-located tests, property-based testing
-globs: ["**/*.ts","**/*.tsx"]
 ---
-
-# Testing (TDD)
 
 # Testing
 

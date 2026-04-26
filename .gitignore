@@ -22,6 +22,12 @@ Thumbs.db
 auth.json
 *.auth.json
 
+# Local agent state (Claude Code grounded-memory cache)
+.claude/grounded-memory.json
+
+# Symlink to private notes outside the repo
+/docs
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

@@ -1,9 +1,13 @@
 ---
+name: state-management
 description: Each component owns its state, framework-appropriate stores, no centralisation
-globs: ["**/*.tsx","**/*.jsx","**/*.svelte","**/*.vue","**/*.svelte.ts"]
+paths:
+  - "**/*.tsx"
+  - "**/*.jsx"
+  - "**/*.svelte"
+  - "**/*.vue"
+  - "**/*.svelte.ts"
 ---
-
-# State Management
 
 # State Management
 

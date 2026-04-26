@@ -1,9 +1,7 @@
 ---
+name: performance
 description: Fine-grained subscriptions, stable references, lazy loading
-globs: ["**/*.ts","**/*.tsx"]
 ---
-
-# Performance
 
 # Performance
 

@@ -1,9 +1,12 @@
 ---
+name: component-patterns
 description: Function components, Props interfaces, no prop drilling, controlled components
-globs: ["**/*.tsx","**/*.jsx","**/*.svelte","**/*.vue"]
+paths:
+  - "**/*.tsx"
+  - "**/*.jsx"
+  - "**/*.svelte"
+  - "**/*.vue"
 ---
-
-# Component Patterns
 
 # Component Patterns
 

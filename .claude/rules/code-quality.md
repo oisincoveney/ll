@@ -1,9 +1,7 @@
 ---
+name: code-quality
 description: Strict type systems, no hacks, meaningful names, early returns
-globs: ["**/*.ts","**/*.tsx"]
 ---
-
-# Code Quality & Strictness
 
 # Code Quality & Strictness
 

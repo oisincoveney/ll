@@ -1,9 +1,7 @@
 ---
+name: architecture
 description: Ousterhout deep modules, clean architecture layers, file size limits
-globs: ["**/*.ts","**/*.tsx"]
 ---
-
-# Architecture (Deep Modules, File Limits)
 
 # Architecture
 

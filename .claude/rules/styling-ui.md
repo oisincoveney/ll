@@ -1,9 +1,13 @@
 ---
+name: styling-ui
 description: Tailwind, shadcn primitives, design tokens
-globs: ["**/*.tsx","**/*.jsx","**/*.svelte","**/*.vue","**/*.css"]
+paths:
+  - "**/*.tsx"
+  - "**/*.jsx"
+  - "**/*.svelte"
+  - "**/*.vue"
+  - "**/*.css"
 ---
-
-# Styling & UI
 
 # Styling & UI
 
